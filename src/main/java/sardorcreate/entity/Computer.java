@@ -3,7 +3,7 @@ package sardorcreate.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import sardorcreate.enums.ComputerType;
+import sardorcreate.enums.*;
 
 @Getter
 @Setter
@@ -16,4 +16,23 @@ public class Computer {
 
     @Enumerated(EnumType.STRING)
     private ComputerType type;
+
+    @Enumerated(EnumType.STRING)
+    private ProcessorType processorType;
+
+    @Enumerated(EnumType.STRING)
+    private ProcessorVariant processorVariant;
+
+    @Enumerated(EnumType.STRING)
+    private RAMType ramType;
+
+    @Enumerated(EnumType.STRING)
+    private ROMType romType;
+
+    @Enumerated(EnumType.STRING)
+    private ROMVariant romVariant;
+
+    @OneToOne
+    @JoinColumn(name = "monitor_id")
+    private Monitor monitor;
 }

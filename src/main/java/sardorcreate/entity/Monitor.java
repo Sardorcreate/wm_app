@@ -3,22 +3,23 @@ package sardorcreate.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
+import sardorcreate.enums.ScreenType;
 
 @Getter
 @Setter
 @Entity
-public class Department {
+public class Monitor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    private String name;
+    private String model;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Department parent;
+    private int size;
 
+    private int refreshRate;
+
+    @Enumerated(EnumType.STRING)
+    private ScreenType type;
 }

@@ -17,10 +17,15 @@ public class Commutator {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @Enumerated(EnumType.STRING)
-    private CommutatorType type;
+    @ManyToOne
+    private Employee owner;
+
+    private String inventoryId;
 
     private String model;
+
+    @Enumerated(EnumType.STRING)
+    private CommutatorType type;
 
     @Enumerated(EnumType.STRING)
     private PortType portType;

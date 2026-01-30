@@ -14,8 +14,6 @@ public class Monitor {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    private String model;
-
     private int size;
 
     private int refreshRate;

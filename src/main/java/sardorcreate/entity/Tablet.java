@@ -14,6 +14,13 @@ public class Tablet {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
+    @ManyToOne
+    private Employee owner;
+
+    private String inventoryId;
+
+    private String model;
+
     @Enumerated(EnumType.STRING)
     private OSType osType;
 

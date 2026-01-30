@@ -11,5 +11,5 @@ public class DepartmentDto {
 
     private long id;
     private String name;
-    private long parentId;
+    private String parent;
 }

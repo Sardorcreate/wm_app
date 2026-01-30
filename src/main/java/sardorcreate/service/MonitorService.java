@@ -1,29 +1,39 @@
 package sardorcreate.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sardorcreate.dto.monitor.MonitorCreateDto;
 import sardorcreate.dto.monitor.MonitorDto;
 import sardorcreate.entity.Monitor;
-import sardorcreate.mapper.MonitorMapper;
 import sardorcreate.repository.MonitorRepository;
 
 @Service
 @RequiredArgsConstructor
 public class MonitorService {
 
-    private final MonitorMapper monitorMapper;
     private final MonitorRepository monitorRepository;
 
-    public ResponseEntity<?> createMonitor(MonitorCreateDto dto) {
+    public Monitor createMonitor(MonitorCreateDto dto) {
 
-        Monitor monitor = monitorMapper.dtoToEntity(dto);
+        Monitor monitor = new Monitor();
+        monitor.setSize(dto.getSize());
+        monitor.setRefreshRate(dto.getRefreshRate());
+        monitor.setType(dto.getType());
 
         Monitor save = monitorRepository.save(monitor);
 
-        MonitorDto newDto = monitorMapper.entityToDto(save);
+        return save;
+    }
 
-        return ResponseEntity.ok(newDto);
+    public MonitorDto getMonDto(Monitor monitor) {
+
+        MonitorDto dto = new MonitorDto();
+
+        dto.setId(monitor.getId());
+        dto.setSize(monitor.getSize());
+        dto.setRefreshRate(monitor.getRefreshRate());
+        dto.setType(monitor.getType());
+
+        return dto;
     }
 }

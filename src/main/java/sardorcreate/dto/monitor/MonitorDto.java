@@ -11,7 +11,6 @@ import sardorcreate.enums.ScreenType;
 public class MonitorDto {
 
     private long id;
-    private String model;
     private int size;
     private int refreshRate;
     private ScreenType type;

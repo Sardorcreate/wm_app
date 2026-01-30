@@ -14,6 +14,13 @@ public class Printer {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
+    @ManyToOne
+    private Employee owner;
+
+    private String inventoryId;
+
+    private String model;
+
     @Enumerated(EnumType.STRING)
     private PrinterType type;
 

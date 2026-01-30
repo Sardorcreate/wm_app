@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sardorcreate.dto.monitor.MonitorCreateDto;
-import sardorcreate.service.MonitorService;
+import sardorcreate.dto.employee.EmployeeCreateDto;
+import sardorcreate.service.EmployeeService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/monitor")
-public class MonitorController {
+@RequestMapping("/api/employee")
+public class EmployeeController {
 
-    private final MonitorService monitorService;
+    private final EmployeeService employeeService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createMonitor(@RequestBody MonitorCreateDto dto) {
+    public ResponseEntity<?> createEmployee(@RequestBody EmployeeCreateDto dto) {
 
-        return monitorService.createMonitor(dto);
+        return employeeService.createEmployee(dto);
     }
 }

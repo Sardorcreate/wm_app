@@ -36,7 +36,15 @@ public class DepartmentService {
             dep.setParent(depart);
         }
 
-        return ResponseEntity.ok(dep);
+        Department save = departmentRepository.save(dep);
+
+        DepartmentDto depDto = new DepartmentDto();
+
+        depDto.setId(save.getId());
+        depDto.setName(save.getName());
+        depDto.setParent(save.getParent().getName());
+
+        return ResponseEntity.ok(depDto);
     }
 
     public Department getDepartment(long id) {
@@ -47,8 +55,6 @@ public class DepartmentService {
             ResponseEntity.badRequest().body("There is no Department with such ID!!!");
         }
 
-        Department dep = byId.get();
-
-        return dep;
+        return byId.get();
     }
 }

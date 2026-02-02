@@ -1,20 +1,19 @@
-package sardorcreate.entity;
+package sardorcreate.dto.printer;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import sardorcreate.enums.PrinterType;
 
 @Getter
 @Setter
-@Entity
-public class Printer extends Tool{
+@ToString
+public class PrinterCreateDto {
 
-    @Enumerated(EnumType.STRING)
+    private long owner;
+    private long inventoryId;
+    private String model;
     private PrinterType type;
-
     private boolean isColored;
-
     private int colorCount;
-
 }

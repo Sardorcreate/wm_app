@@ -70,7 +70,7 @@ public class ComputerService {
         byte[] zip;
 
         try {
-            zip = ZXingUtil.generateZip(save.getInventoryId(), "computer");
+            zip = ZXingUtil.generateZip(String.valueOf(save.getInventoryId()), "computer");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

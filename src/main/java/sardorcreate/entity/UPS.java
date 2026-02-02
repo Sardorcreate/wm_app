@@ -9,18 +9,7 @@ import sardorcreate.enums.UPSType;
 @Getter
 @Setter
 @Entity
-public class UPS {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
-
-    @ManyToOne
-    private Employee owner;
-
-    private String inventoryId;
-
-    private String model;
+public class UPS extends Tool{
 
     @Enumerated(EnumType.STRING)
     private BatteryType batteryType;

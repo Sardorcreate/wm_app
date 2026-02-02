@@ -11,18 +11,7 @@ import sardorcreate.enums.PortType;
 @Getter
 @Setter
 @Entity
-public class Commutator {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
-
-    @ManyToOne
-    private Employee owner;
-
-    private String inventoryId;
-
-    private String model;
+public class Commutator extends Tool{
 
     @Enumerated(EnumType.STRING)
     private CommutatorType type;

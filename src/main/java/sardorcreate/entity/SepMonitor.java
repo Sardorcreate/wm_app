@@ -8,18 +8,7 @@ import sardorcreate.enums.ScreenType;
 @Getter
 @Setter
 @Entity
-public class SepMonitor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
-
-    @ManyToOne
-    private Employee owner;
-
-    private long inventoryId;
-
-    private String model;
+public class SepMonitor extends Tool{
 
     private int size;
 

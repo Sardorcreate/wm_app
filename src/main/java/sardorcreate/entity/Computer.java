@@ -8,18 +8,7 @@ import sardorcreate.enums.*;
 @Getter
 @Setter
 @Entity
-public class Computer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
-
-    @ManyToOne
-    private Employee owner;
-
-    private String inventoryId;
-
-    private String model;
+public class Computer extends Tool{
 
     @Enumerated(EnumType.STRING)
     private ComputerType type;

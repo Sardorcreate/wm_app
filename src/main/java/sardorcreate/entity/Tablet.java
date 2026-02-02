@@ -8,18 +8,7 @@ import sardorcreate.enums.OSType;
 @Getter
 @Setter
 @Entity
-public class Tablet {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
-
-    @ManyToOne
-    private Employee owner;
-
-    private String inventoryId;
-
-    private String model;
+public class Tablet extends Tool{
 
     @Enumerated(EnumType.STRING)
     private OSType osType;

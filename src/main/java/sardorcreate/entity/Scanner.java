@@ -8,18 +8,7 @@ import sardorcreate.enums.ScannerType;
 @Getter
 @Setter
 @Entity
-public class Scanner {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
-
-    @ManyToOne
-    private Employee owner;
-
-    private String inventoryId;
-
-    private String model;
+public class Scanner extends Tool{
 
     @Enumerated(EnumType.STRING)
     private ScannerType type;

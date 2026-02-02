@@ -57,7 +57,7 @@ public class ComputerService {
         Optional<Computer> byInventoryId = computerRepository.findByInventoryId(dto.getInventoryId());
 
         if (byInventoryId.isPresent()) {
-            ResponseEntity.badRequest().body("Device with this inventory ID already exists!!!");
+            throw new RuntimeException("Device with this inventory ID already exists!!!");
         }
 
         Monitor monitor = monitorService.createMonitor(dto.getDto());
@@ -70,7 +70,7 @@ public class ComputerService {
         byte[] zip;
 
         try {
-            zip = ZXingUtil.generateZip(save.getInventoryId());
+            zip = ZXingUtil.generateZip(save.getInventoryId(), "computer");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -88,7 +88,7 @@ public class ComputerService {
         Optional<Computer> byInventoryId = computerRepository.findByInventoryId(id);
 
         if (byInventoryId.isEmpty()) {
-            ResponseEntity.badRequest().body("This computer does not exist!!!");
+            throw new RuntimeException("This computer does not exist!!!");
         }
 
         Computer computer = byInventoryId.get();

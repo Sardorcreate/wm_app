@@ -1,30 +1,20 @@
-package sardorcreate.entity;
+package sardorcreate.dto.sep_monitor;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import sardorcreate.enums.ScreenType;
 
 @Getter
 @Setter
-@Entity
-public class SepMonitor {
+@ToString
+public class SepMonitorDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
-
-    @ManyToOne
-    private Employee owner;
-
+    private long owner;
     private long inventoryId;
-
     private String model;
-
     private int size;
-
     private int refreshRate;
-
-    @Enumerated(EnumType.STRING)
     private ScreenType type;
 }

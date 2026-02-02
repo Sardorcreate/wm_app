@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class ZXingUtil {
 
-    public static byte[] generateZip(String assetCode) throws Exception {
+    public static byte[] generateZip(String assetCode, String str) throws Exception {
 
-        byte[] qr = generateQr(assetCode);          // PNG bytes
-        byte[] barcode = generateBarcode(assetCode); // PNG bytes
+        byte[] qr = generateQr(assetCode, str);          // PNG bytes
+        byte[] barcode = generateBarcode(assetCode, str); // PNG bytes
 
         Map<String, byte[]> files = new HashMap<>();
         files.put(assetCode + "_qr.png", qr);
@@ -24,18 +24,18 @@ public class ZXingUtil {
         return ZipUtil.zipImages(files);
     }
 
-    public static byte[] generateQr(String assetCode) throws Exception {
+    public static byte[] generateQr(String assetCode, String str) throws Exception {
         BitMatrix matrix = new QRCodeWriter()
-                .encode("http://10.32.79.181:8080/api/computer/get/" + assetCode, BarcodeFormat.QR_CODE, 300, 300);
+                .encode("http://192.168.1.3:8080/api/" + str + "/get/" + assetCode, BarcodeFormat.QR_CODE, 300, 300);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(matrix, "PNG", out);
         return out.toByteArray();
     }
 
-    public static byte[] generateBarcode(String assetCode) throws Exception {
+    public static byte[] generateBarcode(String assetCode, String str) throws Exception {
         BitMatrix matrix = new Code128Writer()
-                .encode("http://10.32.79.181:8080/api/computer/get/" + assetCode, BarcodeFormat.CODE_128, 400, 150);
+                .encode("http://192.168.1.3:8080/api/" + str +"/get/" + assetCode, BarcodeFormat.CODE_128, 400, 150);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(matrix, "PNG", out);

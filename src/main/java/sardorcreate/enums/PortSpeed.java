@@ -1,13 +1,12 @@
 package sardorcreate.enums;
 
 public enum PortSpeed {
-    Mb100,
+    Mb10_100,
+    Mb100_1000,
     Gb1,
-    Gb8,
-    Gb10,
-    Gb16,
-    Gb25,
-    Gb32,
-    Gb40,
-    Gb100,
+    Gb1_10,
+    Gb10_25,
+    Gb8_16,
+    Gb16_32,
+    Gb40_100,
 }

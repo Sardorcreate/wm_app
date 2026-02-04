@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sardorcreate.dto.tablet.TabletCreateDto;
 import sardorcreate.dto.tablet.TabletDto;
-import sardorcreate.entity.Employee;
 import sardorcreate.entity.Tablet;
 import sardorcreate.mapper.TabletMapper;
 import sardorcreate.repository.TabletRepository;
@@ -21,7 +20,6 @@ public class TabletService {
 
     private final TabletRepository tabletRepository;
     private final TabletMapper tabletMapper;
-    private final EmployeeService employeeService;
 
     public ResponseEntity<?> createTablet(TabletCreateDto dto) {
 
@@ -31,9 +29,7 @@ public class TabletService {
             throw new RuntimeException("The tool with this inventory_id already exists");
         }
 
-        Employee owner = employeeService.getEmployee(dto.getOwner());
-
-        Tablet tablet = tabletMapper.dtoToEntity(dto, owner);
+        Tablet tablet = tabletMapper.dtoToEntity(dto);
 
         Tablet save = tabletRepository.save(tablet);
 

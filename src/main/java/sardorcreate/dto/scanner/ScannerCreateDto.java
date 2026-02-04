@@ -10,9 +10,10 @@ import sardorcreate.enums.ScannerType;
 @ToString
 public class ScannerCreateDto {
 
-    private long owner;
     private long inventoryId;
     private String model;
+    private String whereFrom;
+    private long price;
     private ScannerType type;
     private int dpi;
 }

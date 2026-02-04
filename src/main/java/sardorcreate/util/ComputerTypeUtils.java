@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ComputerTypeUtils {
+
     private static final Map<ComputerType, Map<ProcessorType, List<ProcessorVariant>>> allowedProcVariants =
             Map.of(
                 ComputerType.SERVER,

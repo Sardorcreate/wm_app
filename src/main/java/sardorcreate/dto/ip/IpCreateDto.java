@@ -9,7 +9,8 @@ import lombok.ToString;
 @ToString
 public class IpCreateDto {
 
-    private long owner;
     private long inventoryId;
     private String model;
+    private String whereFrom;
+    private long price;
 }

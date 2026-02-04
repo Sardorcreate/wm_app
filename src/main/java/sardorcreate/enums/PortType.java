@@ -1,7 +1,11 @@
 package sardorcreate.enums;
 
 public enum PortType {
-    FIBER_CHANNEL,
-    OPTICAL,
-    ETHERNET_RJ45
+    FIBRE_CHANNEL,
+    RJ45,
+    SFP,
+    SFP_PLUS,
+    SFP28,
+    QSFP,
+    NONE
 }

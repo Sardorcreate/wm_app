@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sardorcreate.dto.ups.UPSCreateDto;
 import sardorcreate.dto.ups.UPSDto;
-import sardorcreate.entity.Employee;
 import sardorcreate.entity.UPS;
 import sardorcreate.mapper.UPSMapper;
 import sardorcreate.repository.UPSRepository;
@@ -21,7 +20,6 @@ public class UPSService {
 
     private final UPSRepository upsRepository;
     private final UPSMapper upsMapper;
-    private final EmployeeService employeeService;
 
     public ResponseEntity<?> createUps(UPSCreateDto dto) {
 
@@ -31,9 +29,7 @@ public class UPSService {
             throw new RuntimeException("The tool with this inventory_id already exists");
         }
 
-        Employee owner = employeeService.getEmployee(dto.getOwner());
-
-        UPS ups = upsMapper.dtoToEntity(dto, owner);
+        UPS ups = upsMapper.dtoToEntity(dto);
 
         UPS save = upsRepository.save(ups);
 

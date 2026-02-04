@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sardorcreate.dto.scanner.ScannerCreateDto;
 import sardorcreate.dto.scanner.ScannerDto;
-import sardorcreate.entity.Employee;
 import sardorcreate.entity.Scanner;
 import sardorcreate.mapper.ScannerMapper;
 import sardorcreate.repository.ScannerRepository;
@@ -21,7 +20,6 @@ public class ScannerService {
 
     private final ScannerRepository scannerRepository;
     private final ScannerMapper scannerMapper;
-    private final EmployeeService employeeService;
 
     public ResponseEntity<?> createScanner(ScannerCreateDto dto) {
 
@@ -31,9 +29,7 @@ public class ScannerService {
             throw new RuntimeException("The tool with this inventory_id already exists");
         }
 
-        Employee owner = employeeService.getEmployee(dto.getOwner());
-
-        Scanner scan = scannerMapper.dtoToEntity(dto, owner);
+        Scanner scan = scannerMapper.dtoToEntity(dto);
 
         Scanner save = scannerRepository.save(scan);
 

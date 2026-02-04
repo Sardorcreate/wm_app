@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import sardorcreate.enums.PrinterType;
+import sardorcreate.enums.ToolsStatus;
+
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -14,6 +17,10 @@ public class PrinterDto {
     private long owner;
     private long inventoryId;
     private String model;
+    private Instant date;
+    private String whereFrom;
+    private long price;
+    private ToolsStatus status;
     private PrinterType type;
     private boolean isColored;
     private int colorCount;

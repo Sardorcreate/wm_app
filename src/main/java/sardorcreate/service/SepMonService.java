@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sardorcreate.dto.sep_monitor.SepMonitorCreateDto;
 import sardorcreate.dto.sep_monitor.SepMonitorDto;
-import sardorcreate.entity.Employee;
 import sardorcreate.entity.SepMonitor;
 import sardorcreate.mapper.SepMonMapper;
 import sardorcreate.repository.SepMonRepository;
@@ -21,7 +20,6 @@ public class SepMonService {
 
     private final SepMonRepository sepMonRepository;
     private final SepMonMapper sepMonMapper;
-    private final EmployeeService employeeService;
 
     public ResponseEntity<?> createSepMon(SepMonitorCreateDto dto) {
 
@@ -31,9 +29,7 @@ public class SepMonService {
             throw new RuntimeException("The tool with this inventory_id already exists");
         }
 
-        Employee owner = employeeService.getEmployee(dto.getOwner());
-
-        SepMonitor sepMon = sepMonMapper.dtoToEntity(dto, owner);
+        SepMonitor sepMon = sepMonMapper.dtoToEntity(dto);
 
         SepMonitor save = sepMonRepository.save(sepMon);
 

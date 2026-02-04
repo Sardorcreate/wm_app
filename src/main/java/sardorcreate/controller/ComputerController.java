@@ -34,7 +34,7 @@ public class ComputerController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> getComp(@PathVariable String id) {
+    public ResponseEntity<?> getComp(@PathVariable long id) {
 
         return computerService.getComputerByInventoryId(id);
     }

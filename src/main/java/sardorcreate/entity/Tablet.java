@@ -4,11 +4,30 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import sardorcreate.enums.OSType;
+import sardorcreate.enums.ToolsStatus;
+
+import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-public class Tablet extends Tool{
+public class Tablet {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+
+    @ManyToOne
+    private Employee owner;
+
+    private long inventoryId;
+    private String model;
+    private Instant date;
+    private String whereFrom;
+    private long price;
+
+    @Enumerated(EnumType.STRING)
+    private ToolsStatus status;
 
     @Enumerated(EnumType.STRING)
     private OSType osType;

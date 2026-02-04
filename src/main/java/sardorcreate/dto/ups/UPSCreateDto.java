@@ -12,9 +12,10 @@ import sardorcreate.enums.UPSType;
 @ToString
 public class UPSCreateDto {
 
-    private long owner;
     private long inventoryId;
     private String model;
+    private String whereFrom;
+    private long price;
     private UPSType type;
     private BatteryType batteryType;
 }

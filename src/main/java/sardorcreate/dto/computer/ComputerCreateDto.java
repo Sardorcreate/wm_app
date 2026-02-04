@@ -11,9 +11,10 @@ import sardorcreate.enums.*;
 @ToString
 public class ComputerCreateDto {
 
-    private long owner;
-    private String inventoryId;
+    private long inventoryId;
     private String model;
+    private String whereFrom;
+    private long price;
     private ComputerType type;
     private ProcessorType procType;
     private ProcessorVariant procVariant;

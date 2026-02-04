@@ -10,9 +10,10 @@ import sardorcreate.enums.PrinterType;
 @ToString
 public class PrinterCreateDto {
 
-    private long owner;
     private long inventoryId;
     private String model;
+    private String whereFrom;
+    private long price;
     private PrinterType type;
     private boolean isColored;
     private int colorCount;

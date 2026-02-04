@@ -10,9 +10,10 @@ import sardorcreate.enums.ScreenType;
 @ToString
 public class SepMonitorCreateDto {
 
-    private long owner;
     private long inventoryId;
     private String model;
+    private String whereFrom;
+    private long price;
     private int size;
     private int refreshRate;
     private ScreenType type;

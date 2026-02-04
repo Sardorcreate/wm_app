@@ -10,9 +10,10 @@ import sardorcreate.enums.OSType;
 @ToString
 public class TabletCreateDto {
 
-    private long owner;
     private long inventoryId;
     private String model;
+    private String whereFrom;
+    private long price;
     private OSType osType;
     private int ram;
     private int rom;

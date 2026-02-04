@@ -5,10 +5,28 @@ import lombok.Getter;
 import lombok.Setter;
 import sardorcreate.enums.*;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Entity
-public class Computer extends Tool{
+public class Computer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+
+    @ManyToOne
+    private Employee owner;
+
+    private long inventoryId;
+    private String model;
+    private Instant date;
+    private String whereFrom;
+    private long price;
+
+    @Enumerated(EnumType.STRING)
+    private ToolsStatus status;
 
     @Enumerated(EnumType.STRING)
     private ComputerType type;

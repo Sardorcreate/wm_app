@@ -7,11 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sardorcreate.dto.ip.IpCreateDto;
 import sardorcreate.dto.ip.IpDto;
-import sardorcreate.entity.Employee;
 import sardorcreate.entity.IpPhone;
+import sardorcreate.enums.ToolsStatus;
 import sardorcreate.repository.IpRepository;
 import sardorcreate.util.ZXingUtil;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -19,7 +20,6 @@ import java.util.Optional;
 public class IpService {
 
     private final IpRepository ipRepository;
-    private final EmployeeService employeeService;
 
     public ResponseEntity<?> createIp(IpCreateDto dto) {
 
@@ -29,13 +29,14 @@ public class IpService {
             throw new RuntimeException("The tool with this inventory_id already exists");
         }
 
-        Employee owner = employeeService.getEmployee(dto.getOwner());
-
         IpPhone ip = new IpPhone();
 
-        ip.setOwner(owner);
         ip.setInventoryId(dto.getInventoryId());
         ip.setModel(dto.getModel());
+        ip.setDate(Instant.now());
+        ip.setWhereFrom(dto.getWhereFrom());
+        ip.setPrice(dto.getPrice());
+        ip.setStatus(ToolsStatus.RESERVE);
 
         IpPhone save = ipRepository.save(ip);
 
@@ -68,9 +69,16 @@ public class IpService {
         IpDto dto = new IpDto();
 
         dto.setId(ip.getId());
-        dto.setOwner(ip.getOwner().getId());
+
+        if (!ip.getStatus().equals(ToolsStatus.RESERVE)) {
+            dto.setOwner(ip.getOwner().getId());
+        }
         dto.setInventoryId(ip.getInventoryId());
         dto.setModel(ip.getModel());
+        dto.setDate(ip.getDate());
+        dto.setWhereFrom(ip.getWhereFrom());
+        dto.setPrice(ip.getPrice());
+        dto.setStatus(ip.getStatus());
 
         return ResponseEntity.ok(dto);
     }

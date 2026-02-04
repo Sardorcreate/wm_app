@@ -10,7 +10,6 @@ import sardorcreate.dto.computer.ComputerCreateDto;
 import sardorcreate.dto.computer.ComputerDto;
 import sardorcreate.dto.monitor.MonitorDto;
 import sardorcreate.entity.Computer;
-import sardorcreate.entity.Employee;
 import sardorcreate.entity.Monitor;
 import sardorcreate.enums.ProcessorVariant;
 import sardorcreate.enums.ROMType;
@@ -31,7 +30,6 @@ public class ComputerService {
     private final ComputerRepository computerRepository;
     private final ComputerMapper computerMapper;
     private final MonitorService monitorService;
-    private final EmployeeService employeeService;
 
     public ResponseEntity<?> getProcType(GetCompProcType dto) {
 
@@ -61,9 +59,8 @@ public class ComputerService {
         }
 
         Monitor monitor = monitorService.createMonitor(dto.getDto());
-        Employee owner = employeeService.getEmployee(dto.getOwner());
 
-        Computer comp = computerMapper.dtoToEntity(dto, monitor, owner);
+        Computer comp = computerMapper.dtoToEntity(dto, monitor);
 
         Computer save = computerRepository.save(comp);
 
@@ -83,7 +80,7 @@ public class ComputerService {
                 .body(zip);
     }
 
-    public ResponseEntity<?> getComputerByInventoryId(String id) {
+    public ResponseEntity<?> getComputerByInventoryId(long id) {
 
         Optional<Computer> byInventoryId = computerRepository.findByInventoryId(id);
 

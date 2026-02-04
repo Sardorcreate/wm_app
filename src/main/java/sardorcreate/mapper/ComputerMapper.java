@@ -6,20 +6,25 @@ import sardorcreate.dto.computer.ComputerCreateDto;
 import sardorcreate.dto.computer.ComputerDto;
 import sardorcreate.dto.monitor.MonitorDto;
 import sardorcreate.entity.Computer;
-import sardorcreate.entity.Employee;
 import sardorcreate.entity.Monitor;
+import sardorcreate.enums.ToolsStatus;
+
+import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
 public class ComputerMapper {
 
-    public Computer dtoToEntity(ComputerCreateDto dto, Monitor monitor, Employee owner) {
+    public Computer dtoToEntity(ComputerCreateDto dto, Monitor monitor) {
 
         Computer comp = new Computer();
 
-        comp.setOwner(owner);
         comp.setInventoryId(dto.getInventoryId());
         comp.setModel(dto.getModel());
+        comp.setDate(Instant.now());
+        comp.setWhereFrom(dto.getWhereFrom());
+        comp.setPrice(dto.getPrice());
+        comp.setStatus(ToolsStatus.RESERVE);
         comp.setType(dto.getType());
         comp.setProcessorType(dto.getProcType());
         comp.setProcessorVariant(dto.getProcVariant());
@@ -36,16 +41,22 @@ public class ComputerMapper {
         ComputerDto dto = new ComputerDto();
 
         dto.setId(save.getId());
-        dto.setOwner(save.getOwner().getFullName());
+        if (!save.getStatus().equals(ToolsStatus.RESERVE)) {
+            dto.setOwner(save.getOwner().getFullName());
+        }
         dto.setInventoryId(save.getInventoryId());
         dto.setModel(save.getModel());
+        dto.setDate(save.getDate());
+        dto.setWhereFrom(save.getWhereFrom());
+        dto.setPrice(save.getPrice());
+        dto.setStatus(save.getStatus());
         dto.setType(save.getType());
         dto.setProcType(save.getProcessorType());
         dto.setProcVariant(save.getProcessorVariant());
         dto.setRamType(save.getRamType());
         dto.setRomType(save.getRomType());
         dto.setRomVariant(save.getRomVariant());
-        dto.setDto(monDto);
+        dto.setMonitorDto(monDto);
 
         return dto;
     }

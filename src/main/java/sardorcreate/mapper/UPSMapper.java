@@ -34,7 +34,7 @@ public class UPSMapper {
         UPSDto dto = new UPSDto();
 
         dto.setId(ups.getId());
-        if (!ups.getStatus().equals(ToolsStatus.RESERVE)) {
+        if (ups.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(ups.getOwner().getId());
         }
         dto.setInventoryId(ups.getInventoryId());

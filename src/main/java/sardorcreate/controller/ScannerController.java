@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.scanner.ScannerCreateDto;
 import sardorcreate.service.ScannerService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/scanner")

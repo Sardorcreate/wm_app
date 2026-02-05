@@ -25,7 +25,7 @@ public class SepMonMapper {
         sepMon.setStatus(ToolsStatus.RESERVE);
         sepMon.setSize(dto.getSize());
         sepMon.setRefreshRate(dto.getRefreshRate());
-        sepMon.setType(dto.getType());
+        sepMon.setType(dto.getMonType());
 
         return sepMon;
     }
@@ -36,7 +36,7 @@ public class SepMonMapper {
         SepMonitorDto dto = new SepMonitorDto();
 
         dto.setId(sepMon.getId());
-        if (!sepMon.getStatus().equals(ToolsStatus.RESERVE)) {
+        if (sepMon.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(sepMon.getOwner().getId());
         }
         dto.setInventoryId(sepMon.getInventoryId());

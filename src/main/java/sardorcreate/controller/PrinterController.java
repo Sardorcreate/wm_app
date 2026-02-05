@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.printer.PrinterCreateDto;
 import sardorcreate.service.PrinterService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/printer")

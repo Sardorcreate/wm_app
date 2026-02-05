@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.ups.UPSCreateDto;
 import sardorcreate.service.UPSService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/ups")

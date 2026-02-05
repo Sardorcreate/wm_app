@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.ip.IpCreateDto;
 import sardorcreate.service.IpService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/ip_phone")

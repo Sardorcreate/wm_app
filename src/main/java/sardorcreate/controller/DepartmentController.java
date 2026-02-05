@@ -2,13 +2,11 @@ package sardorcreate.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.department.DepartmentCreateDto;
 import sardorcreate.service.DepartmentService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/department")
@@ -20,5 +18,17 @@ public class DepartmentController {
     public ResponseEntity<?> createDepartment(@RequestBody DepartmentCreateDto dto) {
 
         return departmentService.createDepartment(dto);
+    }
+
+    @GetMapping("/get/level=1")
+    public ResponseEntity<?> getLevelFirstDep() {
+
+        return departmentService.getFirstLevelDep();
+    }
+
+    @GetMapping("get/{parentId}")
+    public ResponseEntity<?> getDepByParent(@PathVariable long parentId) {
+
+        return departmentService.getDepByParent(parentId);
     }
 }

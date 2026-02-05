@@ -35,7 +35,7 @@ public class ScannerMapper {
         
         dto.setId(scan.getId());
 
-        if (!scan.getStatus().equals(ToolsStatus.RESERVE)) {
+        if (scan.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(scan.getOwner().getId());
         }
         dto.setInventoryId(scan.getInventoryId());

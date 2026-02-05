@@ -9,6 +9,8 @@ import sardorcreate.entity.Department;
 import sardorcreate.entity.Employee;
 import sardorcreate.repository.EmployeeRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,5 +55,28 @@ public class EmployeeService {
         }
 
         return byId.get();
+    }
+
+    public ResponseEntity<?> getEmployeeByDep(long id) {
+
+        List<Employee> employeeByDepartmentId = employeeRepository.findEmployeeByDepartment_Id(id);
+
+        if (employeeByDepartmentId.isEmpty()) {
+            throw new RuntimeException("There is no any employees with this dep_id");
+        }
+
+        List<EmployeeDto> dtos = new ArrayList<>();
+
+        for (Employee employee : employeeByDepartmentId) {
+            EmployeeDto newDto = new EmployeeDto();
+
+            newDto.setId(employee.getId());
+            newDto.setFullName(employee.getFullName());
+            newDto.setDepartment(employee.getDepartment().getName());
+
+            dtos.add(newDto);
+        }
+
+        return ResponseEntity.ok(dtos);
     }
 }

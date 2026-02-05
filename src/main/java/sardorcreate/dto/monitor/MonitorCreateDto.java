@@ -12,5 +12,5 @@ public class MonitorCreateDto {
 
     private int size;
     private int refreshRate;
-    private ScreenType type;
+    private ScreenType monType;
 }

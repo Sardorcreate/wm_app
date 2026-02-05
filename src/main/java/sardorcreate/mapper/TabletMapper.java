@@ -35,7 +35,7 @@ public class TabletMapper {
         TabletDto dto = new TabletDto();
 
         dto.setId(tablet.getId());
-        if (!tablet.getStatus().equals(ToolsStatus.RESERVE)) {
+        if (tablet.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(tablet.getOwner().getId());
         }
         dto.setInventoryId(tablet.getInventoryId());

@@ -41,7 +41,7 @@ public class ComputerMapper {
         ComputerDto dto = new ComputerDto();
 
         dto.setId(save.getId());
-        if (!save.getStatus().equals(ToolsStatus.RESERVE)) {
+        if (save.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(save.getOwner().getFullName());
         }
         dto.setInventoryId(save.getInventoryId());

@@ -70,7 +70,7 @@ public class IpService {
 
         dto.setId(ip.getId());
 
-        if (!ip.getStatus().equals(ToolsStatus.RESERVE)) {
+        if (ip.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(ip.getOwner().getId());
         }
         dto.setInventoryId(ip.getInventoryId());

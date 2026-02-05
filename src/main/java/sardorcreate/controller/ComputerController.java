@@ -8,6 +8,7 @@ import sardorcreate.dto.GetCompProcType;
 import sardorcreate.enums.ROMType;
 import sardorcreate.service.ComputerService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/computer")

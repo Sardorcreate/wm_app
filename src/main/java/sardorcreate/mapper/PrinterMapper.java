@@ -36,7 +36,7 @@ public class PrinterMapper {
 
         dto.setId(printer.getId());
 
-        if (!printer.getStatus().equals(ToolsStatus.RESERVE)) {
+        if (printer.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(printer.getOwner().getId());
         }
         dto.setInventoryId(printer.getInventoryId());

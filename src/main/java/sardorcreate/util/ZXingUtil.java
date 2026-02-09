@@ -7,21 +7,15 @@ import com.google.zxing.oned.Code128Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ZXingUtil {
 
-    public static byte[] generateZip(String assetCode, String str) throws Exception {
+    public static byte[] generatePdf(String assetCode, String str) throws Exception {
 
-        byte[] qr = generateQr(assetCode, str);          // PNG bytes
-        byte[] barcode = generateBarcode(assetCode, str); // PNG bytes
+        byte[] qr = generateQr(assetCode, str);
+        byte[] barcode = generateBarcode(assetCode, str);
 
-        Map<String, byte[]> files = new HashMap<>();
-        files.put(assetCode + "_qr.png", qr);
-        files.put(assetCode + "_barcode.png", barcode);
-
-        return ZipUtil.zipImages(files);
+        return PDFUtil.createPdf(qr, barcode, assetCode);
     }
 
     public static byte[] generateQr(String assetCode, String str) throws Exception {

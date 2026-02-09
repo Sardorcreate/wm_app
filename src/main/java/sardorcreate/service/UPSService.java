@@ -1,14 +1,18 @@
 package sardorcreate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sardorcreate.dto.ups.UPSCreateDto;
 import sardorcreate.dto.ups.UPSDto;
+import sardorcreate.entity.Inventory;
 import sardorcreate.entity.UPS;
+import sardorcreate.exception.AlreadyExistsException;
 import sardorcreate.mapper.UPSMapper;
+import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.UPSRepository;
 import sardorcreate.util.ZXingUtil;
 
@@ -20,38 +24,43 @@ public class UPSService {
 
     private final UPSRepository upsRepository;
     private final UPSMapper upsMapper;
+    private final InventoryRepository inventoryRepository;
 
     public ResponseEntity<?> createUps(UPSCreateDto dto) {
 
-        Optional<UPS> byInventoryId = upsRepository.findByInventoryId(dto.getInventoryId());
+        Inventory inventory = new Inventory();
 
-        if (byInventoryId.isPresent()) {
-            throw new RuntimeException("The tool with this inventory_id already exists");
+        inventory.setInventoryId(dto.getInventoryId());
+
+        try {
+            inventoryRepository.save(inventory);
+        } catch (DataIntegrityViolationException e) {
+            throw new AlreadyExistsException("The tool with this inventory_id already exists");
         }
 
-        UPS ups = upsMapper.dtoToEntity(dto);
+        UPS ups = upsMapper.dtoToEntity(dto, inventory);
 
         UPS save = upsRepository.save(ups);
 
-        byte[] zip;
+        byte[] pdf;
 
         try {
-            zip = ZXingUtil.generateZip(String.valueOf(save.getInventoryId()), "ups");
+            pdf = ZXingUtil.generatePdf(String.valueOf(save.getInventoryId().getInventoryId()), "ups");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + save.getInventoryId() + "_codes.zip\"")
-                .contentType(MediaType.parseMediaType("application/zip"))
-                .contentLength(zip.length)
-                .body(zip);
+                        "attachment; filename=\"" + save.getInventoryId().getInventoryId() + "_codes.pdf\"")
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .contentLength(pdf.length)
+                .body(pdf);
     }
 
     public ResponseEntity<?> getUpsByInventoryId(long id) {
 
-        Optional<UPS> byInventoryId = upsRepository.findByInventoryId(id);
+        Optional<UPS> byInventoryId = upsRepository.findByInventoryId_InventoryId(id);
 
         if (byInventoryId.isEmpty()) {
             throw new RuntimeException("The tool with this inventory_id does not exist");

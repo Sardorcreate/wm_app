@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sardorcreate.dto.sep_monitor.SepMonitorCreateDto;
 import sardorcreate.dto.sep_monitor.SepMonitorDto;
+import sardorcreate.entity.Inventory;
 import sardorcreate.entity.SepMonitor;
 import sardorcreate.enums.ToolsStatus;
 
@@ -13,11 +14,11 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class SepMonMapper {
 
-    public SepMonitor dtoToEntity(SepMonitorCreateDto dto) {
+    public SepMonitor dtoToEntity(SepMonitorCreateDto dto, Inventory inventory) {
 
         SepMonitor sepMon = new SepMonitor();
 
-        sepMon.setInventoryId(dto.getInventoryId());
+        sepMon.setInventoryId(inventory);
         sepMon.setModel(dto.getModel());
         sepMon.setDate(Instant.now());
         sepMon.setWhereFrom(dto.getWhereFrom());
@@ -39,7 +40,7 @@ public class SepMonMapper {
         if (sepMon.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(sepMon.getOwner().getId());
         }
-        dto.setInventoryId(sepMon.getInventoryId());
+        dto.setInventoryId(sepMon.getInventoryId().getInventoryId());
         dto.setModel(sepMon.getModel());
         dto.setDate(sepMon.getDate());
         dto.setWhereFrom(sepMon.getWhereFrom());

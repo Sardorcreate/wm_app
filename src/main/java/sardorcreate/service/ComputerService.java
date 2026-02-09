@@ -1,6 +1,7 @@
 package sardorcreate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +11,15 @@ import sardorcreate.dto.computer.ComputerCreateDto;
 import sardorcreate.dto.computer.ComputerDto;
 import sardorcreate.dto.monitor.MonitorDto;
 import sardorcreate.entity.Computer;
+import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Monitor;
 import sardorcreate.enums.ProcessorVariant;
 import sardorcreate.enums.ROMType;
 import sardorcreate.enums.ROMVariant;
+import sardorcreate.exception.AlreadyExistsException;
 import sardorcreate.mapper.ComputerMapper;
 import sardorcreate.repository.ComputerRepository;
+import sardorcreate.repository.InventoryRepository;
 import sardorcreate.util.ComputerTypeUtils;
 import sardorcreate.util.RomTypeUtils;
 import sardorcreate.util.ZXingUtil;
@@ -30,6 +34,7 @@ public class ComputerService {
     private final ComputerRepository computerRepository;
     private final ComputerMapper computerMapper;
     private final MonitorService monitorService;
+    private final InventoryRepository inventoryRepository;
 
     public ResponseEntity<?> getProcType(GetCompProcType dto) {
 
@@ -52,37 +57,41 @@ public class ComputerService {
 
     public ResponseEntity<?> createComputer(ComputerCreateDto dto) {
 
-        Optional<Computer> byInventoryId = computerRepository.findByInventoryId(dto.getInventoryId());
+        Inventory inventory = new Inventory();
 
-        if (byInventoryId.isPresent()) {
-            throw new RuntimeException("Device with this inventory ID already exists!!!");
+        inventory.setInventoryId(dto.getInventoryId());
+
+        try {
+            inventoryRepository.save(inventory);
+        } catch (DataIntegrityViolationException e) {
+            throw new AlreadyExistsException("The tool with this inventory_id already exists");
         }
 
         Monitor monitor = monitorService.createMonitor(dto.getDto());
 
-        Computer comp = computerMapper.dtoToEntity(dto, monitor);
+        Computer comp = computerMapper.dtoToEntity(dto, monitor, inventory);
 
         Computer save = computerRepository.save(comp);
 
-        byte[] zip;
+        byte[] pdf;
 
         try {
-            zip = ZXingUtil.generateZip(String.valueOf(save.getInventoryId()), "computer");
+            pdf = ZXingUtil.generatePdf(String.valueOf(save.getInventoryId().getInventoryId()), "computer");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + save.getInventoryId() + "_codes.zip\"")
-                .contentType(MediaType.parseMediaType("application/zip"))
-                .contentLength(zip.length)
-                .body(zip);
+                        "attachment; filename=\"" + save.getInventoryId().getInventoryId() + "_codes.pdf\"")
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .contentLength(pdf.length)
+                .body(pdf);
     }
 
     public ResponseEntity<?> getComputerByInventoryId(long id) {
 
-        Optional<Computer> byInventoryId = computerRepository.findByInventoryId(id);
+        Optional<Computer> byInventoryId = computerRepository.findByInventoryId_InventoryId(id);
 
         if (byInventoryId.isEmpty()) {
             throw new RuntimeException("This computer does not exist!!!");

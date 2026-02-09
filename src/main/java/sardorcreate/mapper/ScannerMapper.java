@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sardorcreate.dto.scanner.ScannerCreateDto;
 import sardorcreate.dto.scanner.ScannerDto;
+import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Scanner;
 import sardorcreate.enums.ToolsStatus;
 
@@ -13,11 +14,11 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class ScannerMapper {
 
-    public Scanner dtoToEntity(ScannerCreateDto dto) {
+    public Scanner dtoToEntity(ScannerCreateDto dto, Inventory inventory) {
         
         Scanner scan = new Scanner();
         
-        scan.setInventoryId(dto.getInventoryId());
+        scan.setInventoryId(inventory);
         scan.setType(dto.getType());
         scan.setModel(dto.getModel());
         scan.setDate(Instant.now());
@@ -38,7 +39,7 @@ public class ScannerMapper {
         if (scan.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(scan.getOwner().getId());
         }
-        dto.setInventoryId(scan.getInventoryId());
+        dto.setInventoryId(scan.getInventoryId().getInventoryId());
         dto.setModel(scan.getModel());
         dto.setDate(scan.getDate());
         dto.setWhereFrom(scan.getWhereFrom());

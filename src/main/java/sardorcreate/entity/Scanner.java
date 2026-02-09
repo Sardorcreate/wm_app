@@ -20,7 +20,9 @@ public class Scanner {
     @ManyToOne
     private Employee owner;
 
-    private long inventoryId;
+    @OneToOne(optional = false)
+    private Inventory inventoryId;
+
     private String model;
     private Instant date;
     private String whereFrom;

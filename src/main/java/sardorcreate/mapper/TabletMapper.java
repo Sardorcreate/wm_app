@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sardorcreate.dto.tablet.TabletCreateDto;
 import sardorcreate.dto.tablet.TabletDto;
+import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Tablet;
 import sardorcreate.enums.ToolsStatus;
 
@@ -13,11 +14,11 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class TabletMapper {
 
-    public Tablet dtoToEntity(TabletCreateDto dto) {
+    public Tablet dtoToEntity(TabletCreateDto dto, Inventory inventory) {
 
         Tablet tablet = new Tablet();
 
-        tablet.setInventoryId(dto.getInventoryId());
+        tablet.setInventoryId(inventory);
         tablet.setModel(dto.getModel());
         tablet.setDate(Instant.now());
         tablet.setWhereFrom(dto.getWhereFrom());
@@ -38,7 +39,7 @@ public class TabletMapper {
         if (tablet.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(tablet.getOwner().getId());
         }
-        dto.setInventoryId(tablet.getInventoryId());
+        dto.setInventoryId(tablet.getInventoryId().getInventoryId());
         dto.setModel(tablet.getModel());
         dto.setDate(tablet.getDate());
         dto.setWhereFrom(tablet.getWhereFrom());

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sardorcreate.dto.printer.PrinterCreateDto;
 import sardorcreate.dto.printer.PrinterDto;
+import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Printer;
 import sardorcreate.enums.ToolsStatus;
 
@@ -13,11 +14,11 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class PrinterMapper {
 
-    public Printer dtoToEntity(PrinterCreateDto dto) {
+    public Printer dtoToEntity(PrinterCreateDto dto, Inventory inventory) {
 
         Printer printer = new Printer();
 
-        printer.setInventoryId(dto.getInventoryId());
+        printer.setInventoryId(inventory);
         printer.setModel(dto.getModel());
         printer.setDate(Instant.now());
         printer.setWhereFrom(dto.getWhereFrom());
@@ -39,7 +40,7 @@ public class PrinterMapper {
         if (printer.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(printer.getOwner().getId());
         }
-        dto.setInventoryId(printer.getInventoryId());
+        dto.setInventoryId(printer.getInventoryId().getInventoryId());
         dto.setModel(printer.getModel());
         dto.setDate(printer.getDate());
         dto.setWhereFrom(printer.getWhereFrom());

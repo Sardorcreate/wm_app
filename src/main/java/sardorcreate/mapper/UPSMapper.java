@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sardorcreate.dto.ups.UPSCreateDto;
 import sardorcreate.dto.ups.UPSDto;
+import sardorcreate.entity.Inventory;
 import sardorcreate.entity.UPS;
 import sardorcreate.enums.ToolsStatus;
 
@@ -13,11 +14,11 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class UPSMapper {
 
-    public UPS dtoToEntity(UPSCreateDto dto) {
+    public UPS dtoToEntity(UPSCreateDto dto, Inventory inventory) {
 
         UPS ups = new UPS();
 
-        ups.setInventoryId(dto.getInventoryId());
+        ups.setInventoryId(inventory);
         ups.setModel(dto.getModel());
         ups.setDate(Instant.now());
         ups.setWhereFrom(dto.getWhereFrom());
@@ -37,7 +38,7 @@ public class UPSMapper {
         if (ups.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(ups.getOwner().getId());
         }
-        dto.setInventoryId(ups.getInventoryId());
+        dto.setInventoryId(ups.getInventoryId().getInventoryId());
         dto.setModel(ups.getModel());
         dto.setDate(ups.getDate());
         dto.setWhereFrom(ups.getWhereFrom());

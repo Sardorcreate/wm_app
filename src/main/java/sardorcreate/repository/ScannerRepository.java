@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ScannerRepository extends CrudRepository<Scanner, Long> {
 
-    Optional<Scanner> findByInventoryId(long inventoryId);
+    Optional<Scanner> findByInventoryId_InventoryId(long id);
 }

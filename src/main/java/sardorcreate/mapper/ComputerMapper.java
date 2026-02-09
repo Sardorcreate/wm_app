@@ -6,6 +6,7 @@ import sardorcreate.dto.computer.ComputerCreateDto;
 import sardorcreate.dto.computer.ComputerDto;
 import sardorcreate.dto.monitor.MonitorDto;
 import sardorcreate.entity.Computer;
+import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Monitor;
 import sardorcreate.enums.ToolsStatus;
 
@@ -15,11 +16,11 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class ComputerMapper {
 
-    public Computer dtoToEntity(ComputerCreateDto dto, Monitor monitor) {
+    public Computer dtoToEntity(ComputerCreateDto dto, Monitor monitor, Inventory inventory) {
 
         Computer comp = new Computer();
 
-        comp.setInventoryId(dto.getInventoryId());
+        comp.setInventoryId(inventory);
         comp.setModel(dto.getModel());
         comp.setDate(Instant.now());
         comp.setWhereFrom(dto.getWhereFrom());
@@ -44,7 +45,7 @@ public class ComputerMapper {
         if (save.getStatus().equals(ToolsStatus.GIVEN)) {
             dto.setOwner(save.getOwner().getFullName());
         }
-        dto.setInventoryId(save.getInventoryId());
+        dto.setInventoryId(save.getInventoryId().getInventoryId());
         dto.setModel(save.getModel());
         dto.setDate(save.getDate());
         dto.setWhereFrom(save.getWhereFrom());

@@ -9,7 +9,7 @@ import sardorcreate.service.IpService;
 @CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/ip_phone")
+@RequestMapping("/api/ip")
 public class IpController {
 
     private final IpService ipService;

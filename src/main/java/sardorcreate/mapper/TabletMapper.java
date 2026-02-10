@@ -8,7 +8,7 @@ import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Tablet;
 import sardorcreate.enums.ToolsStatus;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class TabletMapper {
 
         tablet.setInventoryId(inventory);
         tablet.setModel(dto.getModel());
-        tablet.setDate(Instant.now());
+        tablet.setDate(LocalDate.now());
         tablet.setWhereFrom(dto.getWhereFrom());
         tablet.setPrice(dto.getPrice());
         tablet.setStatus(ToolsStatus.RESERVE);

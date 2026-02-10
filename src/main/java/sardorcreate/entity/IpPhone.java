@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import sardorcreate.enums.ToolsStatus;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -23,7 +23,7 @@ public class IpPhone {
     private Inventory inventoryId;
 
     private String model;
-    private Instant date;
+    private LocalDate date;
     private String whereFrom;
     private long price;
 

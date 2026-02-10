@@ -8,7 +8,7 @@ import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Scanner;
 import sardorcreate.enums.ToolsStatus;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class ScannerMapper {
         scan.setInventoryId(inventory);
         scan.setType(dto.getType());
         scan.setModel(dto.getModel());
-        scan.setDate(Instant.now());
+        scan.setDate(LocalDate.now());
         scan.setWhereFrom(dto.getWhereFrom());
         scan.setPrice(dto.getPrice());
         scan.setStatus(ToolsStatus.RESERVE);

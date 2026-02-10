@@ -11,6 +11,7 @@ import sardorcreate.dto.printer.PrinterDto;
 import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Printer;
 import sardorcreate.exception.AlreadyExistsException;
+import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.PrinterMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.PrinterRepository;
@@ -63,7 +64,7 @@ public class PrinterService {
         Optional<Printer> byInventoryId = printerRepository.findByInventoryId_InventoryId(id);
 
         if (byInventoryId.isEmpty()) {
-            throw new RuntimeException("The tool with this inventory_id does not exist");
+            throw new NotExistsException("The tool with this inventory_id does not exist");
         }
 
         Printer printer = byInventoryId.get();

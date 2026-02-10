@@ -8,7 +8,7 @@ import sardorcreate.entity.Inventory;
 import sardorcreate.entity.UPS;
 import sardorcreate.enums.ToolsStatus;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class UPSMapper {
 
         ups.setInventoryId(inventory);
         ups.setModel(dto.getModel());
-        ups.setDate(Instant.now());
+        ups.setDate(LocalDate.now());
         ups.setWhereFrom(dto.getWhereFrom());
         ups.setPrice(dto.getPrice());
         ups.setStatus(ToolsStatus.RESERVE);

@@ -4,11 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import sardorcreate.enums.BatteryType;
-import sardorcreate.enums.OSType;
 import sardorcreate.enums.ToolsStatus;
 import sardorcreate.enums.UPSType;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -19,7 +18,7 @@ public class UPSDto {
     private long owner;
     private long inventoryId;
     private String model;
-    private Instant date;
+    private LocalDate date;
     private String whereFrom;
     private long price;
     private ToolsStatus status;

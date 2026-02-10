@@ -12,11 +12,12 @@ import sardorcreate.entity.Inventory;
 import sardorcreate.entity.IpPhone;
 import sardorcreate.enums.ToolsStatus;
 import sardorcreate.exception.AlreadyExistsException;
+import sardorcreate.exception.NotExistsException;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.IpRepository;
 import sardorcreate.util.ZXingUtil;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -42,7 +43,7 @@ public class IpService {
 
         ip.setInventoryId(inventory);
         ip.setModel(dto.getModel());
-        ip.setDate(Instant.now());
+        ip.setDate(LocalDate.now());
         ip.setWhereFrom(dto.getWhereFrom());
         ip.setPrice(dto.getPrice());
         ip.setStatus(ToolsStatus.RESERVE);
@@ -70,7 +71,7 @@ public class IpService {
         Optional<IpPhone> byInventoryId = ipRepository.findByInventoryId_InventoryId(id);
 
         if (byInventoryId.isEmpty()) {
-            throw new RuntimeException("The tool with this inventory_id does not exist");
+            throw new NotExistsException("The tool with this inventory_id does not exist");
         }
 
         IpPhone ip = byInventoryId.get();

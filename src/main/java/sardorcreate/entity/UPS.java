@@ -7,7 +7,7 @@ import sardorcreate.enums.BatteryType;
 import sardorcreate.enums.ToolsStatus;
 import sardorcreate.enums.UPSType;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public class UPS {
     private Inventory inventoryId;
 
     private String model;
-    private Instant date;
+    private LocalDate date;
     private String whereFrom;
     private long price;
 

@@ -11,6 +11,7 @@ import sardorcreate.dto.scanner.ScannerDto;
 import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Scanner;
 import sardorcreate.exception.AlreadyExistsException;
+import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.ScannerMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.ScannerRepository;
@@ -63,7 +64,7 @@ public class ScannerService {
         Optional<Scanner> byInventoryId = scannerRepository.findByInventoryId_InventoryId(id);
 
         if (byInventoryId.isEmpty()) {
-            throw new RuntimeException("The tool with this inventory_id does not exist");
+            throw new NotExistsException("The tool with this inventory_id does not exist");
         }
 
         Scanner scan = byInventoryId.get();

@@ -21,5 +21,5 @@ public class ComputerCreateDto {
     private RAMType ramType;
     private ROMType romType;
     private ROMVariant romVariant;
-    private MonitorCreateDto dto;
+    private MonitorCreateDto monDto;
 }

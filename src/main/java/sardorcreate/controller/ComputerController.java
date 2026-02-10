@@ -16,13 +16,13 @@ public class ComputerController {
 
     private final ComputerService computerService;
 
-    @GetMapping("/get_proc_types")
+    @PostMapping("/get/proc_variants")
     public ResponseEntity<?> getProcType(@RequestBody GetCompProcType dto) {
 
         return computerService.getProcType(dto);
     }
 
-    @GetMapping("get_rom_types/{type}")
+    @GetMapping("/get/rom_variants/{type}")
     public ResponseEntity<?> getRomType(@PathVariable ROMType type) {
 
         return computerService.getRomType(type);

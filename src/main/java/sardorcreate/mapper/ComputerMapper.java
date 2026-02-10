@@ -10,7 +10,7 @@ import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Monitor;
 import sardorcreate.enums.ToolsStatus;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class ComputerMapper {
 
         comp.setInventoryId(inventory);
         comp.setModel(dto.getModel());
-        comp.setDate(Instant.now());
+        comp.setDate(LocalDate.now());
         comp.setWhereFrom(dto.getWhereFrom());
         comp.setPrice(dto.getPrice());
         comp.setStatus(ToolsStatus.RESERVE);

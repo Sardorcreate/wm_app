@@ -8,7 +8,7 @@ import sardorcreate.entity.Inventory;
 import sardorcreate.entity.Printer;
 import sardorcreate.enums.ToolsStatus;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class PrinterMapper {
 
         printer.setInventoryId(inventory);
         printer.setModel(dto.getModel());
-        printer.setDate(Instant.now());
+        printer.setDate(LocalDate.now());
         printer.setWhereFrom(dto.getWhereFrom());
         printer.setPrice(dto.getPrice());
         printer.setStatus(ToolsStatus.RESERVE);

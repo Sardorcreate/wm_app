@@ -11,6 +11,7 @@ import sardorcreate.dto.sep_monitor.SepMonitorDto;
 import sardorcreate.entity.Inventory;
 import sardorcreate.entity.SepMonitor;
 import sardorcreate.exception.AlreadyExistsException;
+import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.SepMonMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.SepMonRepository;
@@ -63,7 +64,7 @@ public class SepMonService {
         Optional<SepMonitor> byInventoryId = sepMonRepository.findByInventoryId_InventoryId(id);
 
         if (byInventoryId.isEmpty()) {
-            throw new RuntimeException("The tool with this inventory_id does not exist");
+            throw new NotExistsException("The tool with this inventory_id does not exist");
         }
 
         SepMonitor sepMon = byInventoryId.get();

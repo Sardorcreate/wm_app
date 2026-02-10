@@ -11,6 +11,7 @@ import sardorcreate.dto.ups.UPSDto;
 import sardorcreate.entity.Inventory;
 import sardorcreate.entity.UPS;
 import sardorcreate.exception.AlreadyExistsException;
+import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.UPSMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.UPSRepository;
@@ -63,7 +64,7 @@ public class UPSService {
         Optional<UPS> byInventoryId = upsRepository.findByInventoryId_InventoryId(id);
 
         if (byInventoryId.isEmpty()) {
-            throw new RuntimeException("The tool with this inventory_id does not exist");
+            throw new NotExistsException("The tool with this inventory_id does not exist");
         }
 
         UPS ups = byInventoryId.get();

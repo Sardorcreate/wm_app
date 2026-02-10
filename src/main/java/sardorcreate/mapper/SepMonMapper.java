@@ -8,7 +8,7 @@ import sardorcreate.entity.Inventory;
 import sardorcreate.entity.SepMonitor;
 import sardorcreate.enums.ToolsStatus;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class SepMonMapper {
 
         sepMon.setInventoryId(inventory);
         sepMon.setModel(dto.getModel());
-        sepMon.setDate(Instant.now());
+        sepMon.setDate(LocalDate.now());
         sepMon.setWhereFrom(dto.getWhereFrom());
         sepMon.setPrice(dto.getPrice());
         sepMon.setStatus(ToolsStatus.RESERVE);

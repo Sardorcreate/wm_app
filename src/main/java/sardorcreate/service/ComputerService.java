@@ -17,6 +17,7 @@ import sardorcreate.enums.ProcessorVariant;
 import sardorcreate.enums.ROMType;
 import sardorcreate.enums.ROMVariant;
 import sardorcreate.exception.AlreadyExistsException;
+import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.ComputerMapper;
 import sardorcreate.repository.ComputerRepository;
 import sardorcreate.repository.InventoryRepository;
@@ -67,7 +68,7 @@ public class ComputerService {
             throw new AlreadyExistsException("The tool with this inventory_id already exists");
         }
 
-        Monitor monitor = monitorService.createMonitor(dto.getDto());
+        Monitor monitor = monitorService.createMonitor(dto.getMonDto());
 
         Computer comp = computerMapper.dtoToEntity(dto, monitor, inventory);
 
@@ -94,7 +95,7 @@ public class ComputerService {
         Optional<Computer> byInventoryId = computerRepository.findByInventoryId_InventoryId(id);
 
         if (byInventoryId.isEmpty()) {
-            throw new RuntimeException("This computer does not exist!!!");
+            throw new NotExistsException("The tool with this inventory_id does not exist");
         }
 
         Computer computer = byInventoryId.get();

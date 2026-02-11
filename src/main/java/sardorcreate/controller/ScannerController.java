@@ -25,4 +25,10 @@ public class ScannerController {
 
         return scannerService.getScannerByInventoryId(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteScannerByInventoryId(@PathVariable long id) {
+
+        return scannerService.deleteScannerByInventoryId(id);
+    }
 }

@@ -26,7 +26,6 @@ import sardorcreate.util.RomTypeUtils;
 import sardorcreate.util.ZXingUtil;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -92,17 +91,29 @@ public class ComputerService {
 
     public ResponseEntity<?> getComputerByInventoryId(long id) {
 
-        Optional<Computer> byInventoryId = computerRepository.findByInventoryId_InventoryId(id);
+        Computer comp = computerRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this inventory_id does not exist")
+                        );
+        MonitorDto monDto = monitorService.getMonDto(comp.getMonitor());
 
-        if (byInventoryId.isEmpty()) {
-            throw new NotExistsException("The tool with this inventory_id does not exist");
-        }
-
-        Computer computer = byInventoryId.get();
-        MonitorDto monDto = monitorService.getMonDto(computer.getMonitor());
-
-        ComputerDto computerDto = computerMapper.entityToDto(computer, monDto);
+        ComputerDto computerDto = computerMapper.entityToDto(comp, monDto);
 
         return ResponseEntity.ok(computerDto);
+    }
+
+    public ResponseEntity<?> deleteCompByInventoryId(long id) {
+
+        Computer comp = computerRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this inventory_id does not exist")
+                        );
+
+        comp.setDeleted(true);
+        computerRepository.save(comp);
+
+        return ResponseEntity.ok("Successfully deleted");
     }
 }

@@ -25,4 +25,10 @@ public class IpController {
 
         return ipService.getIp(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteIpByInventoryId(@PathVariable long id) {
+
+        return ipService.deleteIpByInventoryId(id);
+    }
 }

@@ -17,8 +17,6 @@ import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.UPSRepository;
 import sardorcreate.util.ZXingUtil;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UPSService {
@@ -61,16 +59,28 @@ public class UPSService {
 
     public ResponseEntity<?> getUpsByInventoryId(long id) {
 
-        Optional<UPS> byInventoryId = upsRepository.findByInventoryId_InventoryId(id);
-
-        if (byInventoryId.isEmpty()) {
-            throw new NotExistsException("The tool with this inventory_id does not exist");
-        }
-
-        UPS ups = byInventoryId.get();
+        UPS ups = upsRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
 
         UPSDto dto = upsMapper.entityToDto(ups);
 
         return ResponseEntity.ok(dto);
+    }
+
+    public ResponseEntity<?> deleteUpsByInventoryId(long id) {
+
+        UPS ups = upsRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this inventory_id does not exist")
+                        );
+
+        ups.setDeleted(true);
+        upsRepository.save(ups);
+
+        return ResponseEntity.ok("Successfully deleted");
     }
 }

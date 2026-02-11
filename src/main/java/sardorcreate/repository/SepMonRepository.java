@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface SepMonRepository extends CrudRepository<SepMonitor, Long> {
 
-    Optional<SepMonitor> findByInventoryId_InventoryId(long id);
+    Optional<SepMonitor> findByInventoryId_InventoryIdAndIsDeletedFalse(long id);
 }

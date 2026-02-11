@@ -25,4 +25,10 @@ public class PrinterController {
 
         return printerService.getPrinterByInventoryId(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deletePrinterByInventoryId(@PathVariable long id) {
+
+        return printerService.deletePrinterByInventoryId(id);
+    }
 }

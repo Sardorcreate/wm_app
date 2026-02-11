@@ -17,8 +17,6 @@ import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.TabletRepository;
 import sardorcreate.util.ZXingUtil;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class TabletService {
@@ -61,16 +59,28 @@ public class TabletService {
 
     public ResponseEntity<?> getTabletByInventoryId(long id) {
 
-        Optional<Tablet> byInventoryId = tabletRepository.findByInventoryId_InventoryId(id);
-
-        if (byInventoryId.isEmpty()) {
-            throw new NotExistsException("The tool with this inventory_id does not exist");
-        }
-
-        Tablet tablet = byInventoryId.get();
+        Tablet tablet = tabletRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
 
         TabletDto dto = tabletMapper.entityToDto(tablet);
 
         return ResponseEntity.ok(dto);
+    }
+
+    public ResponseEntity<?> deleteTabletByInventoryId(long id) {
+
+        Tablet tablet = tabletRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this inventory_id does not exist")
+                        );
+
+        tablet.setDeleted(true);
+        tabletRepository.save(tablet);
+
+        return ResponseEntity.ok("Successfully deleted");
     }
 }

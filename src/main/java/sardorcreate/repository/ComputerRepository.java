@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ComputerRepository extends CrudRepository<Computer, Long> {
 
-    Optional<Computer> findByInventoryId_InventoryId(long id);
+    Optional<Computer> findByInventoryId_InventoryIdAndIsDeletedFalse(long id);
 }

@@ -17,8 +17,6 @@ import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.SepMonRepository;
 import sardorcreate.util.ZXingUtil;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class SepMonService {
@@ -61,16 +59,28 @@ public class SepMonService {
 
     public ResponseEntity<?> getSepMonByInventoryId(long id) {
 
-        Optional<SepMonitor> byInventoryId = sepMonRepository.findByInventoryId_InventoryId(id);
-
-        if (byInventoryId.isEmpty()) {
-            throw new NotExistsException("The tool with this inventory_id does not exist");
-        }
-
-        SepMonitor sepMon = byInventoryId.get();
+        SepMonitor sepMon = sepMonRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
 
         SepMonitorDto dto = sepMonMapper.entityToDto(sepMon);
 
         return ResponseEntity.ok(dto);
+    }
+
+    public ResponseEntity<?> deleteSepMonByInventoryId(long id) {
+
+        SepMonitor sepMon = sepMonRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this inventory_id does not exist")
+                        );
+
+        sepMon.setDeleted(true);
+        sepMonRepository.save(sepMon);
+
+        return ResponseEntity.ok("Successfully deleted");
     }
 }

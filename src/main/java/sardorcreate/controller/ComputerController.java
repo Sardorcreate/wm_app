@@ -39,4 +39,10 @@ public class ComputerController {
 
         return computerService.getComputerByInventoryId(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCompByInventoryId(@PathVariable long id) {
+
+        return computerService.deleteCompByInventoryId(id);
+    }
 }

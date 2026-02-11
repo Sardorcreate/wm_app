@@ -25,4 +25,10 @@ public class UPSController {
 
         return upsService.getUpsByInventoryId(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUpsByInventoryId(@PathVariable long id) {
+
+        return upsService.deleteUpsByInventoryId(id);
+    }
 }

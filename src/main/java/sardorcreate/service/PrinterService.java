@@ -17,8 +17,6 @@ import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.PrinterRepository;
 import sardorcreate.util.ZXingUtil;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class PrinterService {
@@ -61,16 +59,28 @@ public class PrinterService {
 
     public ResponseEntity<?> getPrinterByInventoryId(long id) {
 
-        Optional<Printer> byInventoryId = printerRepository.findByInventoryId_InventoryId(id);
+        Printer print = printerRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
 
-        if (byInventoryId.isEmpty()) {
-            throw new NotExistsException("The tool with this inventory_id does not exist");
-        }
-
-        Printer printer = byInventoryId.get();
-
-        PrinterDto dto = printerMapper.entityToDto(printer);
+        PrinterDto dto = printerMapper.entityToDto(print);
 
         return ResponseEntity.ok(dto);
+    }
+
+    public ResponseEntity<?> deletePrinterByInventoryId(long id) {
+
+        Printer print = printerRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this inventory_id does not exist")
+                        );
+
+        print.setDeleted(true);
+        printerRepository.save(print);
+
+        return ResponseEntity.ok("Successfully deleted");
     }
 }

@@ -17,8 +17,6 @@ import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.ScannerRepository;
 import sardorcreate.util.ZXingUtil;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class ScannerService {
@@ -61,16 +59,28 @@ public class ScannerService {
 
     public ResponseEntity<?> getScannerByInventoryId(long id) {
 
-        Optional<Scanner> byInventoryId = scannerRepository.findByInventoryId_InventoryId(id);
-
-        if (byInventoryId.isEmpty()) {
-            throw new NotExistsException("The tool with this inventory_id does not exist");
-        }
-
-        Scanner scan = byInventoryId.get();
+        Scanner scan = scannerRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
 
         ScannerDto dto = scannerMapper.entityToDto(scan);
 
         return ResponseEntity.ok(dto);
+    }
+
+    public ResponseEntity<?> deleteScannerByInventoryId(long id) {
+
+        Scanner scan = scannerRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this inventory_id does not exist")
+                        );
+
+        scan.setDeleted(true);
+        scannerRepository.save(scan);
+
+        return ResponseEntity.ok("Successfully deleted");
     }
 }

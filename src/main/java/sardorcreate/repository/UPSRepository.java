@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface UPSRepository extends CrudRepository<UPS, Long> {
 
-    Optional<UPS> findByInventoryId_InventoryId(long id);
+    Optional<UPS> findByInventoryId_InventoryIdAndIsDeletedFalse(long id);
 }

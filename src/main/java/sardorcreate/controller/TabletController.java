@@ -25,4 +25,10 @@ public class TabletController {
 
         return tabletService.getTabletByInventoryId(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteTabletByInventoryId(@PathVariable long id) {
+
+        return tabletService.deleteTabletByInventoryId(id);
+    }
 }

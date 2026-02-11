@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.GetCommPortCount;
 import sardorcreate.dto.commutator.CommCreateDto;
 import sardorcreate.dto.commutator.CommDto;
@@ -20,13 +21,14 @@ import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.CommMapper;
 import sardorcreate.repository.CommRepository;
 import sardorcreate.repository.InventoryRepository;
+import sardorcreate.specification.CommSpecification;
 import sardorcreate.util.PortTypeAndCountUtils;
 import sardorcreate.util.PortTypeSpeedUtils;
 import sardorcreate.util.PortTypesUtils;
 import sardorcreate.util.ZXingUtil;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -96,15 +98,59 @@ public class CommService {
 
     public ResponseEntity<?> getCommByInventoryId(long id) {
 
-        Optional<Commutator> byInventoryIdInventoryId = commRepository.findByInventoryId_InventoryId(id);
-
-        if (byInventoryIdInventoryId.isEmpty()) {
-            throw new NotExistsException("The tool with this inventory_id does not exist");
-        }
-
-        Commutator comm = byInventoryIdInventoryId.get();
+        Commutator comm = commRepository.
+                findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
         CommDto commDto = commMapper.entityToDto(comm);
 
         return ResponseEntity.ok(commDto);
+    }
+
+    public ResponseEntity<?> deleteCommByInventoryId(long id) {
+
+        Commutator comm = commRepository.
+                findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
+
+        comm.setDeleted(true);
+        commRepository.save(comm);
+
+        return ResponseEntity.ok("Successfully deleted");
+    }
+
+    public ResponseEntity<?> getByFilter(FilterDto dto) {
+
+        List<Commutator> all = commRepository.findAll(CommSpecification.filter(
+                dto.getInventoryId(),
+                dto.getDate(),
+                dto.getStatus()
+        ));
+
+        List<CommDto> commDtos = new ArrayList<>();
+
+        for (Commutator comm : all) {
+            CommDto commDto = commMapper.entityToDto(comm);
+
+            commDtos.add(commDto);
+        }
+
+        return ResponseEntity.ok(commDtos);
+    }
+
+    public ResponseEntity<?> getCommById(long id) {
+
+        Commutator comm = commRepository
+                .findById(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this id does not exist")
+                        );
+
+        CommDto dto = commMapper.entityToDto(comm);
+
+        return ResponseEntity.ok(dto);
     }
 }

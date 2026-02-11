@@ -27,6 +27,7 @@ public class SepMonitor {
     private LocalDate date;
     private String whereFrom;
     private long price;
+    private boolean isDeleted = false;
 
     @Enumerated(EnumType.STRING)
     private ToolsStatus status;

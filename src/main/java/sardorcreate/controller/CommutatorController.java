@@ -3,6 +3,7 @@ package sardorcreate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.GetCommPortCount;
 import sardorcreate.dto.commutator.CommCreateDto;
 import sardorcreate.enums.CommutatorType;
@@ -51,5 +52,23 @@ public class CommutatorController {
     public ResponseEntity<?> getCommByInventoryId(@PathVariable long id) {
 
         return commService.getCommByInventoryId(id);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCommByInventoryId(@PathVariable long id) {
+
+        return commService.deleteCommByInventoryId(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> getByFilter(@RequestBody FilterDto dto) {
+
+        return commService.getByFilter(dto);
+    }
+
+    @GetMapping("/get_by_id/{id}")
+    public ResponseEntity<?> getCommById(@PathVariable long id) {
+
+        return commService.getCommById(id);
     }
 }

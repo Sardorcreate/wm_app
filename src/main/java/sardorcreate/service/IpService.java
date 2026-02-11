@@ -18,7 +18,6 @@ import sardorcreate.repository.IpRepository;
 import sardorcreate.util.ZXingUtil;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -68,13 +67,11 @@ public class IpService {
 
     public ResponseEntity<?> getIp(long id) {
 
-        Optional<IpPhone> byInventoryId = ipRepository.findByInventoryId_InventoryId(id);
-
-        if (byInventoryId.isEmpty()) {
-            throw new NotExistsException("The tool with this inventory_id does not exist");
-        }
-
-        IpPhone ip = byInventoryId.get();
+        IpPhone ip = ipRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                        );
 
         IpDto dto = new IpDto();
 
@@ -91,5 +88,19 @@ public class IpService {
         dto.setStatus(ip.getStatus());
 
         return ResponseEntity.ok(dto);
+    }
+
+    public ResponseEntity<?> deleteIpByInventoryId(long id) {
+
+        IpPhone ip = ipRepository
+                .findByInventoryId_InventoryIdAndIsDeletedFalse(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
+
+        ip.setDeleted(true);
+        ipRepository.save(ip);
+
+        return ResponseEntity.ok("Successfully deleted");
     }
 }

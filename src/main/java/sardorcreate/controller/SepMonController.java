@@ -25,4 +25,10 @@ public class SepMonController {
 
         return sepMonService.getSepMonByInventoryId(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteSepMonByInventoryId(@PathVariable long id) {
+
+        return sepMonService.deleteSepMonByInventoryId(id);
+    }
 }

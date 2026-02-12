@@ -18,7 +18,7 @@ public class MonitorService {
         Monitor monitor = new Monitor();
         monitor.setSize(dto.getSize());
         monitor.setRefreshRate(dto.getRefreshRate());
-        monitor.setType(dto.getMonType());
+        monitor.setMonType(dto.getMonType());
 
         return monitorRepository.save(monitor);
     }
@@ -30,7 +30,7 @@ public class MonitorService {
         dto.setId(monitor.getId());
         dto.setSize(monitor.getSize());
         dto.setRefreshRate(monitor.getRefreshRate());
-        dto.setType(monitor.getType());
+        dto.setType(monitor.getMonType());
 
         return dto;
     }

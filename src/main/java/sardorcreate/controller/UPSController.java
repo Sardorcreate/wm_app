@@ -3,6 +3,7 @@ package sardorcreate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.ups.UPSCreateDto;
 import sardorcreate.service.UPSService;
 
@@ -30,5 +31,17 @@ public class UPSController {
     public ResponseEntity<?> deleteUpsByInventoryId(@PathVariable long id) {
 
         return upsService.deleteUpsByInventoryId(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> getUpsByFilter(@RequestBody FilterDto dto) {
+
+        return upsService.getUpsByFilter(dto);
+    }
+
+    @GetMapping("/get_by_id/{id}")
+    public ResponseEntity<?> getUpsById(@PathVariable long id) {
+
+        return upsService.getUpsById(id);
     }
 }

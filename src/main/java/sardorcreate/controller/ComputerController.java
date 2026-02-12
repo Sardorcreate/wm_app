@@ -3,6 +3,7 @@ package sardorcreate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.computer.ComputerCreateDto;
 import sardorcreate.dto.GetCompProcType;
 import sardorcreate.enums.ROMType;
@@ -44,5 +45,17 @@ public class ComputerController {
     public ResponseEntity<?> deleteCompByInventoryId(@PathVariable long id) {
 
         return computerService.deleteCompByInventoryId(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> getByFilter(@RequestBody FilterDto dto) {
+
+        return computerService.getByFilter(dto);
+    }
+
+    @GetMapping("/get_by_id/{id}")
+    public ResponseEntity<?> getCompById(@PathVariable long id) {
+
+        return computerService.getCompById(id);
     }
 }

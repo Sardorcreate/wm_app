@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.printer.PrinterCreateDto;
 import sardorcreate.dto.printer.PrinterDto;
 import sardorcreate.entity.Inventory;
@@ -15,7 +16,11 @@ import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.PrinterMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.PrinterRepository;
+import sardorcreate.util.GenericSpecification;
 import sardorcreate.util.ZXingUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -82,5 +87,37 @@ public class PrinterService {
         printerRepository.save(print);
 
         return ResponseEntity.ok("Successfully deleted");
+    }
+
+    public ResponseEntity<?> getByFilter(FilterDto dto) {
+
+        List<Printer> all = printerRepository.findAll(GenericSpecification.filter(
+                dto.getInventoryId(),
+                dto.getDate(),
+                dto.getStatus()
+        ));
+
+        List<PrinterDto> printDtos = new ArrayList<>();
+
+        for (Printer print : all) {
+            PrinterDto printDto = printerMapper.entityToDto(print);
+
+            printDtos.add(printDto);
+        }
+
+        return ResponseEntity.ok(printDtos);
+    }
+
+    public ResponseEntity<?> getPrintById(long id) {
+
+        Printer print = printerRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this id does not exist")
+                );
+
+        PrinterDto dto = printerMapper.entityToDto(print);
+
+        return ResponseEntity.ok(dto);
     }
 }

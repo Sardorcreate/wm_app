@@ -3,6 +3,7 @@ package sardorcreate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.sep_monitor.SepMonitorCreateDto;
 import sardorcreate.service.SepMonService;
 
@@ -30,5 +31,17 @@ public class SepMonController {
     public ResponseEntity<?> deleteSepMonByInventoryId(@PathVariable long id) {
 
         return sepMonService.deleteSepMonByInventoryId(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> getSepMonByFilter(@RequestBody FilterDto dto) {
+
+        return sepMonService.getSepMonByFilter(dto);
+    }
+
+    @GetMapping("/get_by_id/{id}")
+    public ResponseEntity<?> getSepMonById(@PathVariable long id) {
+
+        return sepMonService.getSepMonById(id);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.sep_monitor.SepMonitorCreateDto;
 import sardorcreate.dto.sep_monitor.SepMonitorDto;
 import sardorcreate.entity.Inventory;
@@ -15,7 +16,11 @@ import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.SepMonMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.SepMonRepository;
+import sardorcreate.util.GenericSpecification;
 import sardorcreate.util.ZXingUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -82,5 +87,37 @@ public class SepMonService {
         sepMonRepository.save(sepMon);
 
         return ResponseEntity.ok("Successfully deleted");
+    }
+
+    public ResponseEntity<?> getSepMonByFilter(FilterDto dto) {
+
+        List<SepMonitor> all = sepMonRepository.findAll(GenericSpecification.filter(
+                dto.getInventoryId(),
+                dto.getDate(),
+                dto.getStatus()
+        ));
+
+        List<SepMonitorDto> sepMonDtos = new ArrayList<>();
+
+        for (SepMonitor sepMon : all) {
+            SepMonitorDto sepMonDto = sepMonMapper.entityToDto(sepMon);
+
+            sepMonDtos.add(sepMonDto);
+        }
+
+        return ResponseEntity.ok(sepMonDtos);
+    }
+
+    public ResponseEntity<?> getSepMonById(long id) {
+
+        SepMonitor sepMon = sepMonRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this id does not exist")
+                );
+
+        SepMonitorDto dto = sepMonMapper.entityToDto(sepMon);
+
+        return ResponseEntity.ok(dto);
     }
 }

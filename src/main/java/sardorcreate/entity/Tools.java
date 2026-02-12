@@ -1,9 +1,8 @@
-package sardorcreate.dto.scanner;
+package sardorcreate.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import sardorcreate.enums.ScannerType;
 import sardorcreate.enums.ToolsStatus;
 
 import java.math.BigDecimal;
@@ -11,17 +10,21 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ToString
-public class ScannerDto {
+@MappedSuperclass
+public abstract class Tools {
 
-    private long id;
-    private long owner;
-    private long inventoryId;
+    @ManyToOne
+    private Employee owner;
+
+    @OneToOne(optional = false)
+    private Inventory inventoryId;
+
     private String model;
     private LocalDate date;
     private String whereFrom;
     private BigDecimal price;
+    private boolean isDeleted = false;
+
+    @Enumerated(EnumType.STRING)
     private ToolsStatus status;
-    private ScannerType type;
-    private int dpi;
 }

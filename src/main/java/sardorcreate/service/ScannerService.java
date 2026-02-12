@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.scanner.ScannerCreateDto;
 import sardorcreate.dto.scanner.ScannerDto;
 import sardorcreate.entity.Inventory;
@@ -15,7 +16,11 @@ import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.ScannerMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.ScannerRepository;
+import sardorcreate.util.GenericSpecification;
 import sardorcreate.util.ZXingUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -82,5 +87,37 @@ public class ScannerService {
         scannerRepository.save(scan);
 
         return ResponseEntity.ok("Successfully deleted");
+    }
+
+    public ResponseEntity<?> getScanByFilter(FilterDto dto) {
+
+        List<Scanner> all = scannerRepository.findAll(GenericSpecification.filter(
+                dto.getInventoryId(),
+                dto.getDate(),
+                dto.getStatus()
+        ));
+
+        List<ScannerDto> scanDtos = new ArrayList<>();
+
+        for (Scanner scan : all) {
+            ScannerDto scanDto = scannerMapper.entityToDto(scan);
+
+            scanDtos.add(scanDto);
+        }
+
+        return ResponseEntity.ok(scanDtos);
+    }
+
+    public ResponseEntity<?> getScanById(long id) {
+
+        Scanner scan = scannerRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this id does not exist")
+                );
+
+        ScannerDto scanDto = scannerMapper.entityToDto(scan);
+
+        return ResponseEntity.ok(scanDto);
     }
 }

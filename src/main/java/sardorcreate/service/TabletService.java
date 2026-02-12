@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.tablet.TabletCreateDto;
 import sardorcreate.dto.tablet.TabletDto;
 import sardorcreate.entity.Inventory;
@@ -15,7 +16,11 @@ import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.TabletMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.TabletRepository;
+import sardorcreate.util.GenericSpecification;
 import sardorcreate.util.ZXingUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -82,5 +87,37 @@ public class TabletService {
         tabletRepository.save(tablet);
 
         return ResponseEntity.ok("Successfully deleted");
+    }
+
+    public ResponseEntity<?> getTabletByFilter(FilterDto dto) {
+
+        List<Tablet> all = tabletRepository.findAll(GenericSpecification.filter(
+                dto.getInventoryId(),
+                dto.getDate(),
+                dto.getStatus()
+        ));
+
+        List<TabletDto> tabDtos = new ArrayList<>();
+
+        for (Tablet tab : all) {
+            TabletDto tabDto = tabletMapper.entityToDto(tab);
+
+            tabDtos.add(tabDto);
+        }
+
+        return ResponseEntity.ok(tabDtos);
+    }
+
+    public ResponseEntity<?> getTabletById(long id) {
+
+        Tablet tablet = tabletRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this id does not exist")
+                );
+
+        TabletDto tabDto = tabletMapper.entityToDto(tablet);
+
+        return ResponseEntity.ok(tabDto);
     }
 }

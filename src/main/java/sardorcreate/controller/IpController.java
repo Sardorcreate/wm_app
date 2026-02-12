@@ -3,6 +3,7 @@ package sardorcreate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.ip.IpCreateDto;
 import sardorcreate.service.IpService;
 
@@ -30,5 +31,17 @@ public class IpController {
     public ResponseEntity<?> deleteIpByInventoryId(@PathVariable long id) {
 
         return ipService.deleteIpByInventoryId(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> getIpByFilter(@RequestBody FilterDto dto) {
+
+        return ipService.getIpByFilter(dto);
+    }
+
+    @GetMapping("/get_by_id/{id}")
+    public ResponseEntity<?> getIpById(@PathVariable long id) {
+
+        return ipService.getIpById(id);
     }
 }

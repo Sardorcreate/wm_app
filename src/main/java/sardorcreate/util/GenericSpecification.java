@@ -1,17 +1,17 @@
-package sardorcreate.specification;
+package sardorcreate.util;
 
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
-import sardorcreate.entity.Commutator;
+import sardorcreate.entity.Tools;
 import sardorcreate.enums.ToolsStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommSpecification {
+public class GenericSpecification {
 
-    public static Specification<Commutator> filter(
+    public static <T extends Tools> Specification<T> filter(
             Long inventoryId,
             LocalDate date,
             ToolsStatus status

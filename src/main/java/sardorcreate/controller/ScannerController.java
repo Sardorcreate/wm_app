@@ -3,6 +3,7 @@ package sardorcreate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.scanner.ScannerCreateDto;
 import sardorcreate.service.ScannerService;
 
@@ -30,5 +31,17 @@ public class ScannerController {
     public ResponseEntity<?> deleteScannerByInventoryId(@PathVariable long id) {
 
         return scannerService.deleteScannerByInventoryId(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> getScanByFilter(@RequestBody FilterDto dto) {
+
+        return scannerService.getScanByFilter(dto);
+    }
+
+    @GetMapping("/get_by_id/{id}")
+    public ResponseEntity<?> getScanById(@PathVariable long id) {
+
+        return scannerService.getScanById(id);
     }
 }

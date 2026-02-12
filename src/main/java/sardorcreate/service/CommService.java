@@ -21,7 +21,7 @@ import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.CommMapper;
 import sardorcreate.repository.CommRepository;
 import sardorcreate.repository.InventoryRepository;
-import sardorcreate.specification.CommSpecification;
+import sardorcreate.util.GenericSpecification;
 import sardorcreate.util.PortTypeAndCountUtils;
 import sardorcreate.util.PortTypeSpeedUtils;
 import sardorcreate.util.PortTypesUtils;
@@ -124,7 +124,7 @@ public class CommService {
 
     public ResponseEntity<?> getByFilter(FilterDto dto) {
 
-        List<Commutator> all = commRepository.findAll(CommSpecification.filter(
+        List<Commutator> all = commRepository.findAll(GenericSpecification.filter(
                 dto.getInventoryId(),
                 dto.getDate(),
                 dto.getStatus()

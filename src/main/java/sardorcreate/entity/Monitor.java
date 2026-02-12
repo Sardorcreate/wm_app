@@ -19,5 +19,5 @@ public class Monitor {
     private int refreshRate;
 
     @Enumerated(EnumType.STRING)
-    private ScreenType type;
+    private ScreenType monType;
 }

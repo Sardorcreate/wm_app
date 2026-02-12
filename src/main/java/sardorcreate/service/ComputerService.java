@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.GetCompProcType;
 import sardorcreate.dto.computer.ComputerCreateDto;
 import sardorcreate.dto.computer.ComputerDto;
@@ -22,9 +23,11 @@ import sardorcreate.mapper.ComputerMapper;
 import sardorcreate.repository.ComputerRepository;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.util.ComputerTypeUtils;
+import sardorcreate.util.GenericSpecification;
 import sardorcreate.util.RomTypeUtils;
 import sardorcreate.util.ZXingUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -115,5 +118,40 @@ public class ComputerService {
         computerRepository.save(comp);
 
         return ResponseEntity.ok("Successfully deleted");
+    }
+
+    public ResponseEntity<?> getByFilter(FilterDto dto) {
+
+        List<Computer> all = computerRepository.findAll(GenericSpecification.filter(
+                dto.getInventoryId(),
+                dto.getDate(),
+                dto.getStatus()
+        ));
+
+        List<ComputerDto> compDtos = new ArrayList<>();
+
+        for (Computer comp : all) {
+
+            MonitorDto monDto = monitorService.getMonDto(comp.getMonitor());
+            ComputerDto compDto = computerMapper.entityToDto(comp, monDto);
+
+            compDtos.add(compDto);
+        }
+
+        return ResponseEntity.ok(compDtos);
+    }
+
+    public ResponseEntity<?> getCompById(long id) {
+
+        Computer comp = computerRepository
+                .findById(id)
+                .orElseThrow(() ->
+                            new NotExistsException("The tool with this id does not exist")
+                        );
+
+        MonitorDto monDto = monitorService.getMonDto(comp.getMonitor());
+        ComputerDto dto = computerMapper.entityToDto(comp, monDto);
+
+        return ResponseEntity.ok(dto);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.ups.UPSCreateDto;
 import sardorcreate.dto.ups.UPSDto;
 import sardorcreate.entity.Inventory;
@@ -15,7 +16,11 @@ import sardorcreate.exception.NotExistsException;
 import sardorcreate.mapper.UPSMapper;
 import sardorcreate.repository.InventoryRepository;
 import sardorcreate.repository.UPSRepository;
+import sardorcreate.util.GenericSpecification;
 import sardorcreate.util.ZXingUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -82,5 +87,37 @@ public class UPSService {
         upsRepository.save(ups);
 
         return ResponseEntity.ok("Successfully deleted");
+    }
+
+    public ResponseEntity<?> getUpsByFilter(FilterDto dto) {
+
+        List<UPS> all = upsRepository.findAll(GenericSpecification.filter(
+                dto.getInventoryId(),
+                dto.getDate(),
+                dto.getStatus()
+        ));
+
+        List<UPSDto> upsDtos = new ArrayList<>();
+
+        for (UPS ups : all) {
+            UPSDto upsDto = upsMapper.entityToDto(ups);
+
+            upsDtos.add(upsDto);
+        }
+
+        return ResponseEntity.ok(upsDtos);
+    }
+
+    public ResponseEntity<?> getUpsById(long id) {
+
+        UPS ups = upsRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new NotExistsException("The tool with this inventory_id does not exist")
+                );
+
+        UPSDto dto = upsMapper.entityToDto(ups);
+
+        return ResponseEntity.ok(dto);
     }
 }

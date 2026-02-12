@@ -3,6 +3,7 @@ package sardorcreate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.printer.PrinterCreateDto;
 import sardorcreate.service.PrinterService;
 
@@ -30,5 +31,17 @@ public class PrinterController {
     public ResponseEntity<?> deletePrinterByInventoryId(@PathVariable long id) {
 
         return printerService.deletePrinterByInventoryId(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> getPrinterByFilter(@RequestBody FilterDto dto) {
+
+        return printerService.getByFilter(dto);
+    }
+
+    @GetMapping("/get_by_id/{id}")
+    public ResponseEntity<?> getPrintById(@PathVariable long id) {
+
+        return printerService.getPrintById(id);
     }
 }

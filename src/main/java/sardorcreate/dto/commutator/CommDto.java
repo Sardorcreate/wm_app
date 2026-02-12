@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import sardorcreate.enums.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -18,7 +19,7 @@ public class CommDto {
     private String model;
     private LocalDate date;
     private String whereFrom;
-    private long price;
+    private BigDecimal price;
     private ToolsStatus status;
     private CommutatorType type;
     private PortType portType;

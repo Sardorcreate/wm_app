@@ -3,6 +3,7 @@ package sardorcreate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.tablet.TabletCreateDto;
 import sardorcreate.service.TabletService;
 
@@ -30,5 +31,17 @@ public class TabletController {
     public ResponseEntity<?> deleteTabletByInventoryId(@PathVariable long id) {
 
         return tabletService.deleteTabletByInventoryId(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> getTabletByFilter(@RequestBody FilterDto dto) {
+
+        return tabletService.getTabletByFilter(dto);
+    }
+
+    @GetMapping("/get_by_id/{id}")
+    public ResponseEntity<?> getTabletById(@PathVariable long id) {
+
+        return tabletService.getTabletById(id);
     }
 }

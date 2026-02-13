@@ -7,7 +7,11 @@ import sardorcreate.dto.user.UserCreateDto;
 import sardorcreate.dto.user.UserDto;
 import sardorcreate.entity.Department;
 import sardorcreate.entity.User;
+import sardorcreate.exception.AlreadyExistsException;
+import sardorcreate.exception.NotExistsException;
+import sardorcreate.mapper.UserMapper;
 import sardorcreate.repository.UserRepository;
+import sardorcreate.util.MessageService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,29 +23,21 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final DepartmentService departmentService;
+    private final UserMapper userMapper;
 
     public ResponseEntity<?> createUser(UserCreateDto dto) {
 
-        Optional<User> byFullName = userRepository.findByFullName(dto.getFullName());
+        if (userRepository.findByLogin(dto.getLogin()).isPresent()) {
+            throw new AlreadyExistsException(MessageService.getMessage("The employee with this login already exists"));
+        }
 
         Department dep = departmentService.getDepartment(dto.getDepartment());
 
-        if (byFullName.isPresent()) {
-            ResponseEntity.badRequest().body("The user with this name already exists!!!");
-        }
-
-        User user = new User();
-
-        user.setFullName(dto.getFullName());
-        user.setDepartment(dep);
+        User user = userMapper.dtoToEntity(dto, dep);
 
         User save = userRepository.save(user);
 
-        UserDto newDto = new UserDto();
-
-        newDto.setId(save.getId());
-        newDto.setFullName(save.getFullName());
-        newDto.setDepartment(save.getDepartment().getName());
+        UserDto newDto = userMapper.entityToDto(save);
 
         return ResponseEntity.ok(newDto);
     }
@@ -62,19 +58,15 @@ public class UserService {
         List<User> users = userRepository.findUserByDepartment_Id(id);
 
         if (users.isEmpty()) {
-            throw new RuntimeException("There is no any users with this dep_id");
+            throw new NotExistsException(MessageService.getMessage("There is no any users with this dep_id"));
         }
 
         List<UserDto> dtos = new ArrayList<>();
 
         for (User user : users) {
-            UserDto newDto = new UserDto();
+            UserDto dto = userMapper.entityToDto(user);
 
-            newDto.setId(user.getId());
-            newDto.setFullName(user.getFullName());
-            newDto.setDepartment(user.getDepartment().getName());
-
-            dtos.add(newDto);
+            dtos.add(dto);
         }
 
         return ResponseEntity.ok(dtos);

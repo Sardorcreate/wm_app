@@ -20,7 +20,7 @@ public class ZXingUtil {
 
     public static byte[] generateQr(String assetCode, String str) throws Exception {
         BitMatrix matrix = new QRCodeWriter()
-                .encode("http://192.168.1.3:8080/api/" + str + "/get/" + assetCode, BarcodeFormat.QR_CODE, 300, 300);
+                .encode("http://10.32.79.181:8080/api/" + str + "/get/" + assetCode, BarcodeFormat.QR_CODE, 300, 300);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(matrix, "PNG", out);
@@ -29,7 +29,7 @@ public class ZXingUtil {
 
     public static byte[] generateBarcode(String assetCode, String str) throws Exception {
         BitMatrix matrix = new Code128Writer()
-                .encode("http://192.168.1.3:8080/api/" + str +"/get/" + assetCode, BarcodeFormat.CODE_128, 400, 150);
+                .encode("http://10.32.79.181:8080/api/" + str +"/get/" + assetCode, BarcodeFormat.CODE_128, 400, 150);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(matrix, "PNG", out);

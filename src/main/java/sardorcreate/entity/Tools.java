@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public abstract class Tools {
 
     @ManyToOne
-    private Employee owner;
+    private User owner;
 
     @OneToOne(optional = false)
     private Inventory inventoryId;

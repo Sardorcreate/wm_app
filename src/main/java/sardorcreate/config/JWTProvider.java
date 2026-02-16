@@ -1,35 +1,37 @@
 package sardorcreate.config;
 
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.stereotype.Component;
-import org.springframework.security.core.userdetails.UserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import sardorcreate.entity.User;
 import sardorcreate.util.MessageService;
 
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 import java.util.function.Function;
 
 @Component
 public class JWTProvider {
 
-    @Value("")
-    private String SECRET_KEY;
+    @Value("${jwt.secret-key}")
+    private String secret_key;
 
-    @Value("")
-    private long TOKEN_EXPIRATION;
+    @Value("${jwt.expiration}")
+    private Duration expiration;
 
-    public String generateAccessToken(UserDetails userDetails) {return generateToken(userDetails, TOKEN_EXPIRATION);}
+    public String generateAccessToken(User user) {return generateToken(user, expiration.toMillis());}
 
-    private String generateToken(UserDetails userDetails, long expiration) {
+    private String generateToken(User user, long expiration) {
 
         return Jwts
                 .builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(user.getLogin())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(signKey())
@@ -68,7 +70,7 @@ public class JWTProvider {
 
     private Key signKey() {
 
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secret_key);
 
         return Keys.hmacShaKeyFor(keyBytes);
     }

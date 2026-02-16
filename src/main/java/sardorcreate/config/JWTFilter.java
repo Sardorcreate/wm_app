@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import sardorcreate.util.RestConstant;
 
 import java.io.IOException;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -24,50 +25,53 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JWTProvider jwtProvider;
     private final UserDetailsService userDetailsService;
 
+    private static final Set<String> PUBLIC_ENDPOINTS = Set.of(
+            "/auth/login"
+    );
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain) throws ServletException, IOException {
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
 
-        if (request.getServletPath().equals("/auth")) {
-            filterChain.doFilter(request, response);
+        try {
+            String path = request.getRequestURI();
 
-            return;
-        }
+            if (PUBLIC_ENDPOINTS.contains(path)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-        final String authHeader = request.getHeader(RestConstant.AUTHORIZATION_HEADER);
-        final String login;
-        final String jwt;
+            final String authHeader = request.getHeader(RestConstant.AUTHORIZATION_HEADER);
 
-        if (authHeader == null || !authHeader.startsWith(RestConstant.TOKEN_TYPE)) {
-            filterChain.doFilter(request, response);
+            if (authHeader == null || !authHeader.startsWith(RestConstant.TOKEN_TYPE)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-            return;
-        }
-        jwt = authHeader.substring(7);
-        login = jwtProvider.extractUsername(jwt);
+            String jwt = authHeader.substring(RestConstant.TOKEN_TYPE.length());
+            String username = jwtProvider.extractUsername(jwt);
 
-        if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(login);
-
-            try {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 if (jwtProvider.isValidToken(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities()
-                    );
-
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-            } catch (Exception e) {
-                throw new ServletException(e.getMessage());
             }
-        }
 
-        filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
+
+        } catch (Exception e) {
+            System.out.println("JWTFilter error: " + e.getMessage());
+            e.printStackTrace();
+            filterChain.doFilter(request, response);
+        }
     }
 }

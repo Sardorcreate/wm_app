@@ -15,7 +15,6 @@ import sardorcreate.util.MessageService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,13 +43,11 @@ public class UserService {
 
     public User getUser(long id) {
 
-        Optional<User> byId = userRepository.findById(id);
-
-        if (byId.isEmpty()) {
-            throw new RuntimeException("This user does not exist!!!");
-        }
-
-        return byId.get();
+        return userRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new NotExistsException("The user with this id does not exist")
+                );
     }
 
     public ResponseEntity<?> getUserByDep(long id) {

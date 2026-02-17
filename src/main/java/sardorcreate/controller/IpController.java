@@ -2,12 +2,12 @@ package sardorcreate.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.ip.IpCreateDto;
 import sardorcreate.service.IpService;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/ip")
@@ -16,8 +16,10 @@ public class IpController {
     private final IpService ipService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createIp(@RequestBody IpCreateDto dto) {
+    public ResponseEntity<?> createIp(@RequestBody IpCreateDto dto, Authentication auth) {
 
+        System.out.println("auth.getPrincipal() = " + auth.getPrincipal());
+        System.out.println("auth.getAuthorities() = " + auth.getAuthorities());
         return ipService.createIp(dto);
     }
 

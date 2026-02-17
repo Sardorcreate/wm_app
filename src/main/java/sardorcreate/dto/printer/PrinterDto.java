@@ -6,7 +6,7 @@ import lombok.ToString;
 import sardorcreate.enums.PrinterType;
 import sardorcreate.enums.ToolsStatus;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 
 @Getter
@@ -20,7 +20,7 @@ public class PrinterDto {
     private String model;
     private LocalDate date;
     private String whereFrom;
-    private BigDecimal price;
+    private long price;
     private ToolsStatus status;
     private PrinterType type;
     private boolean isColored;

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import sardorcreate.enums.ToolsStatus;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -22,7 +21,7 @@ public abstract class Tools {
     private String model;
     private LocalDate date;
     private String whereFrom;
-    private BigDecimal price;
+    private long price;
     private boolean isDeleted = false;
 
     @Enumerated(EnumType.STRING)

@@ -6,7 +6,7 @@ import lombok.ToString;
 import sardorcreate.dto.monitor.MonitorDto;
 import sardorcreate.enums.*;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 
 @Getter
@@ -20,7 +20,7 @@ public class ComputerDto {
     private String model;
     private LocalDate date;
     private String whereFrom;
-    private BigDecimal price;
+    private long price;
     private ToolsStatus status;
     private ComputerType type;
     private ProcessorType procType;

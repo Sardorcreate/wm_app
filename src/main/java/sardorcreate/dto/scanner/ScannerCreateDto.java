@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import sardorcreate.enums.ScannerType;
 
-import java.math.BigDecimal;
+
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ public class ScannerCreateDto {
     private long inventoryId;
     private String model;
     private String whereFrom;
-    private BigDecimal price;
+    private long price;
     private ScannerType type;
     private int dpi;
 }

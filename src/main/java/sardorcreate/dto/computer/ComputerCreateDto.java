@@ -6,7 +6,7 @@ import lombok.ToString;
 import sardorcreate.dto.monitor.MonitorCreateDto;
 import sardorcreate.enums.*;
 
-import java.math.BigDecimal;
+
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ public class ComputerCreateDto {
     private long inventoryId;
     private String model;
     private String whereFrom;
-    private BigDecimal price;
+    private long price;
     private ComputerType type;
     private ProcessorType procType;
     private ProcessorVariant procVariant;

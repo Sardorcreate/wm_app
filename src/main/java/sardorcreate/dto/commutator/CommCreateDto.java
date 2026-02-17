@@ -8,7 +8,7 @@ import sardorcreate.enums.PortCount;
 import sardorcreate.enums.PortSpeed;
 import sardorcreate.enums.PortType;
 
-import java.math.BigDecimal;
+
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class CommCreateDto {
     private long inventoryId;
     private String model;
     private String whereFrom;
-    private BigDecimal price;
+    private long price;
     private CommutatorType type;
     private PortType portType;
     private PortSpeed portSpeed;

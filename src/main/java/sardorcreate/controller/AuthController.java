@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.user.LoginDto;
 import sardorcreate.service.AuthService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -15,7 +16,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto login) {
-        System.out.println("Login attempt: " + login.getLogin());
         return authService.login(login);
     }
 }

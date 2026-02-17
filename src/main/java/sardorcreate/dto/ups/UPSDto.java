@@ -7,7 +7,7 @@ import sardorcreate.enums.BatteryType;
 import sardorcreate.enums.ToolsStatus;
 import sardorcreate.enums.UPSType;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 
 @Getter
@@ -21,7 +21,7 @@ public class UPSDto {
     private String model;
     private LocalDate date;
     private String whereFrom;
-    private BigDecimal price;
+    private long price;
     private ToolsStatus status;
     private UPSType type;
     private BatteryType batteryType;

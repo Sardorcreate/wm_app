@@ -3,7 +3,6 @@ package sardorcreate.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import sardorcreate.enums.Role;
 import sardorcreate.enums.UserStatus;
 
 @Getter
@@ -23,8 +22,7 @@ public class User {
     @ManyToOne
     private Department department;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String roles;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;

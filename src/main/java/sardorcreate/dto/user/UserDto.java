@@ -3,7 +3,6 @@ package sardorcreate.dto.user;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import sardorcreate.enums.Role;
 import sardorcreate.enums.UserStatus;
 
 @Getter
@@ -14,8 +13,7 @@ public class UserDto {
     private long id;
     private String fullName;
     private String login;
-    private String password;
     private String department;
-    private Role role;
+    private String roles;
     private UserStatus status;
 }

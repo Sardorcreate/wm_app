@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.user.UserCreateDto;
 import sardorcreate.service.UserService;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/employee")

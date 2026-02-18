@@ -6,7 +6,6 @@ import sardorcreate.dto.user.UserCreateDto;
 import sardorcreate.dto.user.UserDto;
 import sardorcreate.entity.Department;
 import sardorcreate.entity.User;
-import sardorcreate.enums.Role;
 import sardorcreate.enums.UserStatus;
 
 @Component
@@ -27,7 +26,7 @@ public class UserMapper {
         user.setLogin(dto.getLogin());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setStatus(UserStatus.ACTIVE);
-        user.setRole(Role.ROLE_ADMIN);
+        user.setRoles("ROLE_USER");
 
         return user;
     }
@@ -41,7 +40,7 @@ public class UserMapper {
         dto.setDepartment(save.getDepartment().getName());
         dto.setLogin(save.getLogin());
         dto.setStatus(save.getStatus());
-        dto.setRole(save.getRole());
+        dto.setRoles(save.getRoles());
 
         return dto;
     }

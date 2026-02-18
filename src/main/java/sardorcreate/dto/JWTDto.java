@@ -11,5 +11,5 @@ public class JWTDto {
 
     private long id;
     private String login;
-    private String role;
+    private String roles;
 }

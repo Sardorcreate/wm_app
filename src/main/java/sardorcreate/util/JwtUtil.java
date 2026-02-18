@@ -1,14 +1,23 @@
 package sardorcreate.util;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 import sardorcreate.dto.JWTDto;
 
+import java.security.Key;
 import java.time.Duration;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-@Component
+@Service
 public class JwtUtil {
 
     @Value("${jwt.secret-key}")
@@ -17,43 +26,75 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private Duration expiration;
 
-    public String encode(Long id, String login, String role) {
+    public String generateToken(JWTDto dto) {
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put("id", dto.getId());
+        claims.put("login", dto.getLogin());
+        claims.put("roles", dto.getRoles());
+
+        return createToken(claims, dto.getLogin());
+    }
+
+    private String createToken(Map<String, Object> claims, String login) {
 
         return Jwts.builder()
-                .setIssuer("Sardorcreate")
+                .setClaims(claims)
+                .setSubject(login)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration.toMillis()))
-                .claim("id", id)
-                .claim("login", login)
-                .claim("role", role)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public JWTDto decode(String token) {
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token)
-                    .getBody();
+    private Key getSignKey() {
 
-            JWTDto dto = new JWTDto();
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 
-            System.out.println("token = " + token);
-            Number id = (Number) claims.get("id");
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
-            if (id != null) {
-                dto.setId(id.longValue());
-            }
+    public String extractLogin(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
 
-            dto.setLogin((String) claims.get("login"));
-            dto.setRole((String) claims.get("role"));
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("id", Long.class));
+    }
 
-            System.out.println("dto = " + dto);
-            return dto;
+    private String extractRoles(String token) {
+        return extractClaim(token, claims -> claims.get("roles", String.class));
+    }
 
-        } catch (Exception e) {
-            throw new RuntimeException("Invalid token");
-        }
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+
+        final String login = extractLogin(token);
+
+        return (login.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private Map<String, Object> getAllClaims(String token) {
+        return extractAllClaims(token);
     }
 }

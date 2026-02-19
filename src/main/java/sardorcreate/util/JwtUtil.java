@@ -27,6 +27,7 @@ public class JwtUtil {
     private Duration expiration;
 
     public String generateToken(JWTDto dto) {
+
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("id", dto.getId());
@@ -58,12 +59,14 @@ public class JwtUtil {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Long extractUserId(String token) {
-        return extractClaim(token, claims -> claims.get("id", Long.class));
+    public String extractRoles(String token) {
+
+        return extractClaim(token, claims -> claims.get("roles", String.class));
     }
 
-    private String extractRoles(String token) {
-        return extractClaim(token, claims -> claims.get("roles", String.class));
+    public String extractId(String token) {
+
+        return extractClaim(token, claims -> claims.get("id", String.class));
     }
 
     private Date extractExpiration(String token) {
@@ -71,7 +74,9 @@ public class JwtUtil {
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+
         final Claims claims = extractAllClaims(token);
+
         return claimsResolver.apply(claims);
     }
 
@@ -92,9 +97,5 @@ public class JwtUtil {
         final String login = extractLogin(token);
 
         return (login.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
-
-    private Map<String, Object> getAllClaims(String token) {
-        return extractAllClaims(token);
     }
 }

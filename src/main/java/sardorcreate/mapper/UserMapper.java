@@ -26,7 +26,7 @@ public class UserMapper {
         user.setLogin(dto.getLogin());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setStatus(UserStatus.ACTIVE);
-        user.setRoles("ROLE_USER");
+        user.setRoles("ROLE_ADMIN");
 
         return user;
     }

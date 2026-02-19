@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Map.of(
                         "timestamp",
-                        Instant.now(),
+                        LocalDateTime.now(),
                         "status", 400,
                         "message", e.getMessage()
                 ));
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Map.of(
                         "timestamp",
-                        Instant.now(),
+                        LocalDateTime.now(),
                         "status", 400,
                         "message", e.getMessage()
                 ));

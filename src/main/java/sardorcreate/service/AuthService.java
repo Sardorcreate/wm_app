@@ -1,5 +1,6 @@
 package sardorcreate.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,7 @@ public class AuthService implements UserDetailsService {
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
 
-    @Override
+    @Override @NonNull
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 
         User user = userRepository
@@ -45,12 +46,12 @@ public class AuthService implements UserDetailsService {
                             new NotExistsException("The user with this login does not exist")
                         );
 
-        UserDto userDto = userMapper.entityToDto(user);
         JWTDto jwtDto = new JWTDto();
+        jwtDto.setId(user.getId());
+        jwtDto.setLogin(user.getLogin());
+        jwtDto.setRoles(user.getRoles());
 
-        jwtDto.setId(userDto.getId());
-        jwtDto.setLogin(userDto.getLogin());
-        jwtDto.setRoles(userDto.getRoles());
+        UserDto userDto = userMapper.entityToDto(user);
 
         String token = jwtUtil.generateToken(jwtDto);
 

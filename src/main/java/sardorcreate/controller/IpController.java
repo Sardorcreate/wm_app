@@ -2,7 +2,6 @@ package sardorcreate.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sardorcreate.dto.FilterDto;
 import sardorcreate.dto.ip.IpCreateDto;
@@ -16,10 +15,7 @@ public class IpController {
     private final IpService ipService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createIp(@RequestBody IpCreateDto dto, Authentication auth) {
-
-        System.out.println("auth.getPrincipal() = " + auth.getPrincipal());
-        System.out.println("auth.getAuthorities() = " + auth.getAuthorities());
+    public ResponseEntity<?> createIp(@RequestBody IpCreateDto dto) {
         return ipService.createIp(dto);
     }
 

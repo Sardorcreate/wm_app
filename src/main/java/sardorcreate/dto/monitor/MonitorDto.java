@@ -13,5 +13,5 @@ public class MonitorDto {
     private long id;
     private int size;
     private int refreshRate;
-    private ScreenType type;
+    private ScreenType monType;
 }

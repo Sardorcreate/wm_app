@@ -30,7 +30,7 @@ public class MonitorService {
         dto.setId(monitor.getId());
         dto.setSize(monitor.getSize());
         dto.setRefreshRate(monitor.getRefreshRate());
-        dto.setType(monitor.getMonType());
+        dto.setMonType(monitor.getMonType());
 
         return dto;
     }

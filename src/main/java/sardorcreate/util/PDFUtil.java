@@ -17,22 +17,22 @@ public class PDFUtil {
         PdfWriter.getInstance(document, out);
         document.open();
 
-        document.add(new Paragraph("Asset Code: " + assetCode));
+        document.add(new Paragraph("Inventarizatsiya ID:" + assetCode));
         document.add(new Paragraph(" "));
 
         Image qrImage = Image.getInstance(qr);
-        qrImage.scaleToFit(200, 200);
+        qrImage.scaleToFit(50, 50);
         qrImage.setAlignment(Image.ALIGN_CENTER);
 
         Image barcodeImage = Image.getInstance(barcode);
-        barcodeImage.scaleToFit(400, 150);
+        barcodeImage.scaleToFit(70, 60);
         barcodeImage.setAlignment(Image.ALIGN_CENTER);
 
-        document.add(new Paragraph("QR Code"));
+        document.add(new Paragraph("QR Kod"));
         document.add(qrImage);
 
         document.add(new Paragraph(" "));
-        document.add(new Paragraph("Barcode"));
+        document.add(new Paragraph("Shtrix Kod"));
         document.add(barcodeImage);
 
         document.close();
